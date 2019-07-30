@@ -7,10 +7,12 @@ This project is a generic version of Asset Management System for NUSERV
  - Reactjs
  
 ### Web Server
- - NGINX ("Don't use apache 'coz it sucks!!!")
+ - NGINX `Don't use apache 'coz it sucks!!!`
 
 
 # Installation
+`Hopes you already installed PHP, NPM, Node, NGINX and its dependencies`
+`if not, just google it.`
 
 clone the repo first and `cd ` to its root directory
 
@@ -24,7 +26,7 @@ $ cp .env.example  .env
 add your database credentials inside .env
 ```sh
 $ php artisan jwt:secret
-$ php artisan migrate:fresh --seed
+$ php artisan migrate:fresh
 ```
 * ##### For React App
 go back to repo root folder
