@@ -24,6 +24,7 @@ $ cp .env.example  .env
 add your database credentials inside .env
 ```sh
 $ php artisan jwt:secret
+$ php artisan migrate:fresh --seed
 ```
 * ##### For React App
 go back to repo root folder
