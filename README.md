@@ -7,7 +7,7 @@ This project is a generic version of Asset Management System for NUSERV
  - Reactjs
  
 ### Web Server
- - NGINX
+ - NGINX ("Don't use apache 'coz it sucks!!!")
 
 
 # Installation
@@ -34,3 +34,4 @@ $ cd client
 $ npm init
 $ npm run build
 ```
+###### if something wrong happend just google it !!!
