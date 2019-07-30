@@ -12,6 +12,8 @@ This project is a generic version of Asset Management System for NUSERV
 
 # Installation
 
+clone the repo first and `cd ` to its root directory
+
 * ##### For PHP Laravel
 
 ```sh
