@@ -34,4 +34,4 @@ $ cd client
 $ npm init
 $ npm run build
 ```
-`if something wrong happend just google it !!!`
+`if something went wrong just google it !!!`
