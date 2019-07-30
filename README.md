@@ -21,7 +21,7 @@ clone the repo first and `cd ` to its root directory
 ```sh
 $ cd server
 $ composer init && composer install
-$ cp .env.example  .env
+$ cp .env.example .env
 ```
 add your database credentials inside .env
 ```sh
