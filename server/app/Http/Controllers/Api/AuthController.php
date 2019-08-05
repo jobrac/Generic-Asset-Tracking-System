@@ -13,9 +13,9 @@ use JWTAuth;
 class AuthController extends Controller{
 
     public function login(Request $request){
-    	
+
     	$credentials = $request->only('username', 'password');
-    	
+
     	if (Auth::attempt($credentials)) {
 
             // dd(Token::create());
@@ -74,6 +74,13 @@ class AuthController extends Controller{
                 'token_type' => 'bearer',
                 'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+    public function check(){
+        return [
+            'message' => 'Token is valid',
+            'payload' => auth()->payload()->toArray(),
+        ];
     }
 
     public function logout(){

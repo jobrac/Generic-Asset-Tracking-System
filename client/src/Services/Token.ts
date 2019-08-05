@@ -1,7 +1,7 @@
 import Cookies from 'universal-cookie';
+import {Requests} from '.';
 
 export default class Token{
-
     
     public static save(token:any):void{
         let a = new Date();
@@ -26,6 +26,11 @@ export default class Token{
         cookies.remove('token');
     }
 
+    public static get():any{
+        this.update();
+        return new Cookies().get('token');
+    }
+
     public static exist():any{
         const cookies = new Cookies();
         const token = cookies.get('token');
@@ -37,7 +42,27 @@ export default class Token{
         return true;
     }
 
+    /**
+     * Check token's validity and refreshes if invalid
+     * 
+     * @returns bool
+     */
 
-   
+    public static async valid(){
+
+        if(Token.exist()){ 
+            const a:any = await Requests.check();
+
+            if(a.network_error || a.status !== 200 ){
+                this.remove();
+                return false;
+            }else{
+                this.update();
+                return true;
+            }
+
+        }
+        return false;
+    }
 
 }

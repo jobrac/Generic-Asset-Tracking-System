@@ -13,8 +13,8 @@ class ComponentMiddleware extends React.Component<any,any>{
         }
     }
 
-    componentDidMount(){
-        if(Token.exist()){
+    async componentDidMount(){
+        if(await Token.valid()){
             this.setState({
                 finish : true,
                 token : true,

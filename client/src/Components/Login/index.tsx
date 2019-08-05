@@ -85,7 +85,7 @@ class Login extends React.Component<any,any>{
                                 onChange={this.update_input_text}
                                 value={this.state.credentials.password}
                                 error = {this.state.error.status}
-                                helperText = { this.state.error.status ? this.state.error.message : '' }
+                                helperText = { this.state.error.status ? <b dangerouslySetInnerHTML={{__html:this.state.error.message}}></b> : '' }
                                 required
                             />
                             <div className="submit-login">
@@ -130,50 +130,63 @@ class Login extends React.Component<any,any>{
         const credentials = this.state.credentials;
 
 
-        const a:any = await Requests.Login({
+        const a:any = await Requests.login({
             username : credentials.username,
             password : credentials.password,
         });
 
-        switch(a.status){
-            case 401 : 
-                credentials['password'] = "";
+        console.log(a);
 
-                this.setState({
-                    submit : false,
-                    error : {
-                        status : true,
-                        message : "Credentials does not exist!!"
-                    },
-                    credentials : credentials,
-                })
-                break;
-            case 200 :
-                const returnUrl = this.props.location.state;
+        if(!a.network_error){
+            switch(a.status){
+                case 401 : 
+                    credentials['password'] = "";
 
-                Token.save(a.data.token);     
-
-                if(returnUrl === undefined || returnUrl === null ){
                     this.setState({
-                        redirect : '/',
+                        submit : false,
+                        error : {
+                            status : true,
+                            message : "Credentials does not exist!!"
+                        },
+                        credentials : credentials,
                     })
                     break;
-                }
-                
-                this.setState({
-                    redirect : returnUrl.from, 
-                })
-                break;
-            default : 
-                this.setState({
-                    submit : false,
-                    error : {
-                        status : true,
-                        message : "Something wrong with the server, please try again!!!!"
-                    },
-                })
-                break;
+                case 200 :
+                    const returnUrl = this.props.location.state;
+
+                    Token.save(a.data.token);     
+
+                    if(returnUrl === undefined || returnUrl === null ){
+                        this.setState({
+                            redirect : '/',
+                        })
+                        break;
+                    }
+                    
+                    this.setState({
+                        redirect : returnUrl.from, 
+                    })
+                    break;
+                default : 
+                    this.setState({
+                        submit : false,
+                        error : {
+                            status : true,
+                            message : "Something wrong with the server, please try again later!!!!"
+                        },
+                    })
+                    break;
+            }
+        }else{
+            this.setState({
+                submit : false,
+                error : {
+                    status : true,
+                    message : "Something wrong with the server. <br /> Please contact Administrator!!!!"
+                },
+            })
         }
+
         return;
     }
 

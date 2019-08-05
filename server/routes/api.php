@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 
 Route::group(['namespace' => 'Api'], function () {
     /**
-        Auth Controller
+    *    Auth Controller
     */
     Route::group(['prefix' => 'auth'],function (){
         Route::post('login',
@@ -29,13 +29,23 @@ Route::group(['namespace' => 'Api'], function () {
         Route::post('refresh',
             [
                 'as'            =>  'api.auth.refresh',
-                'uses'          =>  'AuthController@refresh',            ]
+                'uses'          =>  'AuthController@refresh',
+            ]
+        );
+
+        Route::post('check',
+            [
+                'as'            =>  'api.auth.check',
+                'uses'          =>  'AuthController@check',
+                'middleware'    =>  'jwt'
+            ]
         );
 
         Route::post('logout',
             [
-                'as'    =>  'api.auth.logout',
-                'uses' =>  'AuthController@logout',
+                'as'            =>  'api.auth.logout',
+                'uses'          =>  'AuthController@logout',
+                'middleware'    =>  'jwt'
             ]
         );
     });
@@ -43,7 +53,7 @@ Route::group(['namespace' => 'Api'], function () {
 
     /*--- Wrap in a middleware "jwt" ---*/
     Route::group(['middleware' => 'jwt'], function () {
-        
+
         Route::group(['prefix' => 'account'], function () {
             Route::get('requestable/hardware',
                 [
@@ -709,7 +719,7 @@ Route::group(['namespace' => 'Api'], function () {
 
         /*--- Users API ---*/
 
-        
+
         Route::group([ 'prefix' => 'users' ], function () {
 
             Route::post('two_factor_reset',
