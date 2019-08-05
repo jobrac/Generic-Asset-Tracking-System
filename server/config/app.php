@@ -199,6 +199,7 @@ return [
         * Custom service provider
         */
         App\Providers\MacroServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
 
     ],
 

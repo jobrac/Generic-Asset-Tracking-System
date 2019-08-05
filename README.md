@@ -6,10 +6,6 @@ This project is a generic version of Asset Management System for NUSERV
  - PHP (Laravel)
  - Reactjs
  
-### Web Server
- - NGINX `Don't use apache 'coz it sucks!!!`
-
-
 # Installation
 `Hopes you already installed PHP, NPM, Node, NGINX and its dependencies`
 `if not, just google it.`
