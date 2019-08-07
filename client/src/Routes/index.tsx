@@ -3,7 +3,8 @@ import * as Component from '../Components';
 import {ComponentMiddleware, LoginMiddleware} from '../Middleware';
 import {
     BrowserRouter,
-    Route
+    Route,
+    Switch
 } from 'react-router-dom'
 
 import {
@@ -19,12 +20,14 @@ class Navigations extends React.Component<any,any>{
         return(
             <React.Fragment>
                 <BrowserRouter>
-                    <Container maxWidth="lg">
-                        <Route path="/">
-                            <Route exact path ="/" render= {(props) => <ComponentMiddleware {...props} component={Component.Home} />}/>
-                            <Route exact path ="/login" component={LoginMiddleware} />
+                    <Switch>  
+                        <Route exact path ="/login" component={LoginMiddleware} />
+                        <Route path ="/" strict>
+                            <Component.Navigation>
+                                <Route exact path ="/" render= {(props) => <ComponentMiddleware {...props} component={Component.Home} />}/>
+                            </Component.Navigation>
                         </Route>
-                    </Container>
+                    </Switch>
                 </BrowserRouter>
             </React.Fragment>
         );

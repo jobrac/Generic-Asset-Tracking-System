@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Card, CardHeader, IconButton, CardContent, Typography, CardActions,
-    Avatar, TextField, Button, CircularProgress
+    Avatar, TextField, Button, CircularProgress, Container
 } from '@material-ui/core'
 import {
     AccountCircle
@@ -38,7 +38,7 @@ class Login extends React.Component<any,any>{
         }
 
         return(
-            <div>
+            <Container maxWidth="lg">
                 <div className="logo-login">
                     <img src='/img/apsoft-logo.png' />
                     <div className="logo-title">
@@ -101,7 +101,7 @@ class Login extends React.Component<any,any>{
                         </form>
                     </CardContent>
                 </Card>
-            </div>
+            </Container>
         );
     }
 

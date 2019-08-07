@@ -120,7 +120,12 @@ class Requests{
         
         //refresh token if expired, skip if token is invalid
         if( b.auth !== undefined && b.auth === true && b.response.status === 401 ){
+
             if(Token.valid()){
+                if(b.params === undefined || b.params === null){
+                    return this.retry(b.callback,undefined);
+                }
+
                 return this.retry(b.callback,b.params);
             }
         }
