@@ -1,391 +1,266 @@
-// import React from 'react';
-// import clsx from 'clsx';
-// import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
-// import Drawer from '@material-ui/core/Drawer';
-// import AppBar from '@material-ui/core/AppBar';
-// import Toolbar from '@material-ui/core/Toolbar';
-// import List from '@material-ui/core/List';
-// import CssBaseline from '@material-ui/core/CssBaseline';
-// import Typography from '@material-ui/core/Typography';
-// import Divider from '@material-ui/core/Divider';
-// import IconButton from '@material-ui/core/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
-// import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-// import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-// import ListItem from '@material-ui/core/ListItem';
-// import ListItemIcon from '@material-ui/core/ListItemIcon';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import InboxIcon from '@material-ui/icons/MoveToInbox';
-// import MailIcon from '@material-ui/icons/Mail';
-// import { Container, Hidden} from '@material-ui/core';
-
-// const drawerWidth = 240;
-
-// const useStyles = makeStyles((theme: Theme) =>
-//     createStyles({
-//         root: {
-//             display: 'flex',
-//         },
-//         appBar: {
-//             zIndex: theme.zIndex.drawer + 1,
-//             transition: theme.transitions.create(['width', 'margin'], {
-//             easing: theme.transitions.easing.sharp,
-//             duration: theme.transitions.duration.leavingScreen,
-//             }),
-//         },
-//         appBarShift: {
-//             marginLeft: drawerWidth,
-//             width: `calc(100% - ${drawerWidth}px)`,
-//             transition: theme.transitions.create(['width', 'margin'], {
-//                 easing: theme.transitions.easing.sharp,
-//                 duration: theme.transitions.duration.enteringScreen,
-//             }),
-//         },
-//         menuButton: {
-//             marginRight: 36,
-//         },
-//         hide: {
-//             display: 'none',
-//         },
-//         drawer: {
-//             width: drawerWidth,
-//             flexShrink: 0,
-//             whiteSpace: 'nowrap',
-//         },
-//         drawerOpen: {
-//             width: drawerWidth,
-//             transition: theme.transitions.create('width', {
-//                 easing: theme.transitions.easing.sharp,
-//                 duration: theme.transitions.duration.enteringScreen,
-//             }),
-//         },
-//         drawerClose: {
-//             transition: theme.transitions.create('width', {
-//                 easing: theme.transitions.easing.sharp,
-//                 duration: theme.transitions.duration.leavingScreen,
-//             }),
-//             overflowX: 'hidden',
-//             width: theme.spacing(7) + 1,
-//             [theme.breakpoints.up('sm')]: {
-//                 width: theme.spacing(9) + 1,
-//             },
-//         },
-//         toolbar: {
-//             display: 'flex',
-//             alignItems: 'center',
-//             justifyContent: 'flex-end',
-//             padding: '0 8px',
-//             ...theme.mixins.toolbar,
-//         },
-//         content: {
-//             flexGrow: 1,
-//             padding: theme.spacing(3),
-//         },
-//     }),
-// );
-
-
-// export default function Navigationbar(props:any) {
-//     const classes = useStyles();
-//     const theme = useTheme();
-//     const [open, setOpen] = React.useState(false);
-
-//     function handleDrawerOpen() {
-//         setOpen(true);
-//     }
-
-//     function handleDrawerClose() {
-//         setOpen(false);
-//     }
-
-//     return (
-//         <div className={classes.root}>
-//             <CssBaseline />
-//             <AppBar
-//                 position="fixed"
-//                 className={clsx(classes.appBar, {
-//                     [classes.appBarShift]: open,
-//                 })}
-//             >
-            
-//                 <Toolbar>
-//                     <IconButton
-//                         color="inherit"
-//                         aria-label="open drawer"
-//                         onClick={handleDrawerOpen}
-//                         edge="start"
-//                         className={clsx(classes.menuButton, {
-//                             [classes.hide]: open,
-//                         })}
-//                     >
-//                         <MenuIcon />
-//                     </IconButton>
-//                     <Typography variant="h6" noWrap>
-//                         Mini variant drawer
-//                     </Typography>
-//                 </Toolbar>
-//             </AppBar>
-        
-//             <Hidden smUp implementation="css">
-//                 <Drawer
-//                     variant="permanent"
-//                     className={clsx(classes.drawer, {
-//                         [classes.drawerOpen]: open,
-//                         [classes.drawerClose]: !open,
-//                     })}
-                    
-//                     classes={{
-//                         paper: clsx({
-//                             [classes.drawerOpen]: open,
-//                             [classes.drawerClose]: !open,
-//                         }),
-//                     }}
-//                     open={open}
-//                 >
-            
-//                     <div className={classes.toolbar}>
-//                         <IconButton onClick={handleDrawerClose}>
-//                             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-//                         </IconButton>
-//                     </div>
-                
-//                     <Divider />
-//                         <List>
-//                             {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-//                                 <ListItem button key={text}>
-//                                     <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-//                                     <ListItemText primary={text} />
-//                                 </ListItem>
-//                             ))}
-//                         </List>
-//                     <Divider />
-//                 </Drawer>
-//             </Hidden>
-//             <Hidden xsDown implementation="css">
-//                 <Drawer
-//                     variant="permanent"
-//                     className={clsx(classes.drawer, {
-//                         [classes.drawerOpen]: open,
-//                         [classes.drawerClose]: !open,
-//                     })}
-                    
-//                     classes={{
-//                         paper: clsx({
-//                             [classes.drawerOpen]: open,
-//                             [classes.drawerClose]: !open,
-//                         }),
-//                     }}
-//                     open={true}
-//                 >
-            
-//                     <div className={classes.toolbar}>
-//                         <IconButton onClick={handleDrawerClose}>
-//                             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-//                         </IconButton>
-//                     </div>
-                
-//                     <Divider />
-//                         <List>
-//                             {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-//                                 <ListItem button key={text}>
-//                                     <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-//                                     <ListItemText primary={text} />
-//                                 </ListItem>
-//                             ))}
-//                         </List>
-//                     <Divider />
-//                 </Drawer>
-//             </Hidden>
-//             <Container maxWidth="lg">
-//                 {props.children}
-//             </Container>
-//         </div>
-//     );
-// }
-
-
-
-
-
-
-
-
-
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
-import MenuIcon from '@material-ui/icons/Menu';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
+import { Container, Collapse } from '@material-ui/core';
+import Backdrop from '@material-ui/core/Backdrop';
+import './NavigationStyle.scss';
+import {
+	Dashboard,Laptop, Assignment, Mouse, BatteryFull, Keyboard, AssignmentInd, SaveAlt, Settings, Print, PlaylistAddCheck,
+	ExpandLess, ExpandMore
+} from '@material-ui/icons';
 
-const drawerWidth = 240;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-    },
-    drawer: {
-      [theme.breakpoints.up('sm')]: {
-        width: drawerWidth,
-        flexShrink: 0,
-      },
-    },
 
-    drawer1: {
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: 'nowrap',
-    },
-    drawerOpen: {
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    
-    drawerClose: {
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        overflowX: 'hidden',
-        width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9) + 1,
-        },
-    },
-    
-    appBar: {
-      marginLeft: drawerWidth,
-      [theme.breakpoints.up('sm')]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-      },
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-      [theme.breakpoints.up('sm')]: {
-        display: 'none',
-      },
-    },
-    toolbar: theme.mixins.toolbar,
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-    },
-  }),
-);
+//constant setup for navigations
+const menu_title = "Asset Management";
+const logo = "/img/apsoft-logo.png";
+const sidebar_properties = [
+	{
+		name : "Dashboard",
+		icon : Dashboard,
+		url  : "/" 
+	},{
+		name : "Assets",
+		icon : Laptop,
+		props: [
+			{name : "List All", 		url  : "/assets"},
+			{name : "Bulk Checkout", 	url : "/assets/bulkcheckout"},
+			{name : "Requested", 		url : "/assets/requested"},
+			{name : "Deleted", 			url : "/assets/deleted"},
+			{name : "Asset Maintenance",url : "/assets/maintenace"},
+			{name : "Bulk Audit", 		url : "/assets/bulkaudit"},
+		]
+	},{
+		name : "Licenses",
+		icon : Assignment,
+		url  : '/licenses',
+	},{
+		name : "Accessories",
+		icon :  Mouse,
+		url  : "/accessories", 
+	},{
+		name : "Consumables",
+		icon : BatteryFull,
+		url  : "/consumables",
+	},{
+		name : "Components",
+		icon : Keyboard,
+		url  : "/components",
+	},{
+		name : "Users",
+		icon : AssignmentInd,
+		url  : "/users",
+	},{
+		name : "Imports",
+		icon : SaveAlt,
+		url  : "/imports",
+	},{
+		name : "Settings",
+		icon : Settings,
+		url  : "/settings",
+	},{
+		name : "Reports",
+		icon : Print,
+		url  : "/reports",
+	},{
+		name : "Requestable",
+		icon : PlaylistAddCheck,
+		url  : "/requestables", 
+	}
+]
 
-export default function Navigationbar(props:any) {
-  const { container } = props;
-  const classes = useStyles();
-  const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  function handleDrawerToggle() {
-    setMobileOpen(!mobileOpen);
-  }
 
-  const drawer = (
-    <div>
-      <div className={classes.toolbar} />
-      <Divider />
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Responsive drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-            <div className={classes.toolbar}>
-                <IconButton onClick={handleDrawerToggle}>
-                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                </IconButton>
-            </div>
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-      <Container maxWidth="lg">
-                {props.children}
-        </Container>
-    </div>
-  );
+
+
+
+
+
+
+
+
+
+
+
+
+//Do not touch below if you dont want to fuck-up !!!
+class Navigation extends React.Component<any,any>{
+	constructor(props:any){
+		super(props);
+
+		this.state = {
+			sidebar : false
+		}
+
+		this.toggleSidebar = this.toggleSidebar.bind(this);
+		this.topbar = this.topbar.bind(this);
+		this.sidebar_desktop = this.sidebar_desktop.bind(this);
+		this.sidebar_list = this.sidebar_list.bind(this);
+
+	}
+
+	toggleSidebar(){
+		this.setState({
+			sidebar : !this.state.sidebar,
+		});
+	}
+
+	topbar(){
+		return(
+			<React.Fragment>
+				<CssBaseline />
+				<AppBar
+					position="fixed"
+					className="appbar"
+				>
+					<Toolbar>
+
+						<IconButton
+							color="inherit"
+							aria-label="open drawer"
+							edge="start"
+							className={this.state.sidebar ? "hamburger hamburger--squeeze is-active" : "hamburger"} 
+							onClick={this.toggleSidebar}
+						>	
+							<span className="hamburger-box">
+								<span className="hamburger-inner"></span>
+							</span>
+						</IconButton>
+						<Typography variant="h6" noWrap>
+							<img className="navigation-logo" src={logo} alt={menu_title} />{menu_title}
+						</Typography>
+					</Toolbar>
+				</AppBar>
+			</React.Fragment>
+		)
+	}
+
+	sidebar_list(){
+		let list = sidebar_properties;
+
+		const getStateBool = (state:any) =>{
+			
+			console.log(state);
+			return this.state.state;
+		};
+
+		return(
+			<List>
+				{list.map((text, index) => (
+					<React.Fragment key={index} >
+						<ListItem button onClick={()=>{
+							if(!text.props){
+								console.log('Undefined props');
+							}else{
+
+								const a = text.name;
+
+								console.log(this.state.a)
+
+								this.setState({
+									a : !this.state.a ? true : !this.state.a,
+								});
+
+							}
+						}}>
+							{
+								(!text.props) ? 
+									<React.Fragment>
+										<ListItemIcon>{<text.icon />}</ListItemIcon>
+										<ListItemText>{text.name}</ListItemText>
+									</React.Fragment>
+								: 
+									<React.Fragment>
+										<ListItemIcon>{<text.icon />}</ListItemIcon>
+										<ListItemText>{text.name}</ListItemText>
+										{this.state.open ? <ExpandLess /> : <ExpandMore />}
+									</React.Fragment>
+
+							}
+						</ListItem>
+
+						{
+							(text.props) ? 
+								<Collapse in={getStateBool(text.name)} timeout="auto" unmountOnExit>
+									<List component="div" disablePadding>
+										{/* {
+											text.props.map((value,key)=>(
+												<ListItem button key={key}>
+													<ListItemText >
+														{value.name}
+													</ListItemText>								
+												</ListItem>
+											))
+										} */}
+										asdasdasdasdasd
+									</List>
+								</Collapse>
+								: ''
+						}
+						
+					</React.Fragment>
+				))}
+			</List>
+		);
+	}
+
+	sidebar_desktop(){
+		return(
+			<Drawer
+        		variant="permanent"
+        		className={this.state.sidebar ? "sidebar-open" : "sidebar-close"}
+        		open={this.state.sidebar}
+      		>
+				<Divider />
+        			<this.sidebar_list />
+        		<Divider />
+      		</Drawer>
+		);
+	}
+
+
+	render(){
+		return(
+			<div>
+				<this.topbar />
+				<this.sidebar_desktop />
+
+				<div className="container-body">
+					<Backdrop open={this.state.sidebar} onClick={this.toggleSidebar}/>
+					<Container maxWidth="xl">
+						{this.props.children} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+						
+					</Container>
+				</div>
+			</div>
+		)
+	}
 }
+
+export default Navigation;

@@ -1,4 +1,88 @@
-// .app-bar{
-//     margin: -8px -0px 10px -8px;
-//     width: 100vw !important;
-// }
+$openSidebarWidth : 240px;
+$closeSidebarWidth : 60px;
+$sidebar-transistion : width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+
+
+.appbar{
+    z-index: 1201 !important;
+    
+    & .MuiToolbar-root{
+        min-height: 0px !important;
+    }
+}
+
+
+.sidebar{
+    white-space: nowrap;
+}
+
+.sidebar-open{
+    @extend .sidebar;
+    & .MuiPaper-root{
+        width : $openSidebarWidth;
+        transition : $sidebar-transistion;
+        top : 45px;
+    }
+}
+
+.sidebar-close{
+    @extend .sidebar;
+    & .MuiPaper-root{
+        width : $closeSidebarWidth;
+        transition : $sidebar-transistion;
+        top : 45px;
+    }
+}
+
+.container-body{
+    margin-top: 60px;
+    margin-left: 60px;
+}
+
+.hamburger{
+    // padding:12px !important;
+    outline: 0;
+    margin-left: -20px !important;
+
+    -webkit-transform:scale(0.6);
+    -moz-transform:scale(0.6);
+    -ms-transform:scale(0.6);
+    transform:scale(0.6);
+
+    & .hamburger-box{
+
+        & .hamburger-inner{
+            background-color: white;
+
+            &::before{
+                background-color: white;
+            }
+
+            &::after{
+                background-color: white;
+            }
+        }
+    }
+}
+
+.navigation-logo{
+    height: 20px;
+    width: 80px;
+    margin-right: 8px;
+}
+
+@media only screen and (min-width: 601px) {
+    .hamburger{
+        margin-left: -27px !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .sidebar-close{
+        visibility: hidden;
+    }
+
+    .container-body{
+        margin-left: 10px !important;
+    }
+}

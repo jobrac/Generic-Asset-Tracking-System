@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 });
 
 export default function Sidebar() {
-  const classes = useStyles();
+  const classes = useStyles(0);
   const [state, setState] = React.useState({
     top: false,
     left: false,

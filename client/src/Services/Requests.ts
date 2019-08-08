@@ -71,6 +71,12 @@ class Requests{
 
     public static async check(){
         
+        if(!Token.exist()){
+            this.format.status = 401;
+            this.format.data = 'nothing';
+            return this.format;
+        }
+
         const header = this.header(Token.get());
 
         await axios({

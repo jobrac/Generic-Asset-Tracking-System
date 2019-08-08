@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function Topbar() {
-  const classes = useStyles();
+  const classes = useStyles(0);
 
   return (
     <div className={classes.root}>
