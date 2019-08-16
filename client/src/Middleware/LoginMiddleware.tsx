@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router'
-import {Token} from '../Services';
-import {Login} from '../Components';
+import {Token} from 'Services';
+import {Login} from 'Components';
 
 class LoginMiddleware extends React.Component<any,any>{
 

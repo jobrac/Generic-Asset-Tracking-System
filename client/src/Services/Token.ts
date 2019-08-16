@@ -1,5 +1,5 @@
 import Cookies from 'universal-cookie';
-import {Requests} from '.';
+import { Requests } from 'Services';
 
 export default class Token{
     
@@ -51,7 +51,7 @@ export default class Token{
     public static async valid(){
 
         if(Token.exist()){ 
-            const a:any = await Requests.check();
+            const a:any = await Requests.Auth.check();
 
             if(a.network_error || a.status !== 200 ){
                 this.remove();

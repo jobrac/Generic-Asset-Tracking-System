@@ -1,6 +1,9 @@
 import React from 'react';
-import {Token} from '../Services';
+import {Token, Requests} from 'Services';
 import { Redirect } from 'react-router';
+import {connect} from 'react-redux'; // for connecting redux;
+import { UserAccount as User } from 'Redux/Actions';
+import jwt_decode from 'jwt-decode';
 
 class ComponentMiddleware extends React.Component<any,any>{
 
@@ -15,14 +18,22 @@ class ComponentMiddleware extends React.Component<any,any>{
 
     async componentDidMount(){
         if(await Token.valid()){
-            this.setState({
-                finish : true,
-                token : true,
-            })
+
+            const id:any = jwt_decode(Token.get());
+            const user:Requests.Format = await Requests.User.get(id.sub);
+
+            if(user.status === 200){
+                this.props.User(user.data);
+                this.setState({
+                    finish : true,
+                    token : true,
+                })
+            }
         }
         this.setState({
             finish : true,
         })
+        
         
     }
 
@@ -39,4 +50,4 @@ class ComponentMiddleware extends React.Component<any,any>{
 
 }
 
-export default ComponentMiddleware;
+export default connect(null,{User})(ComponentMiddleware);

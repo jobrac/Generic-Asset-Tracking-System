@@ -18,9 +18,17 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "baseUrl" : "./src",
+    "paths"   : {
+        "Services"      : ["Services/"],
+        "Redux/*"       : ["Redux/Actions/"],
+        "Routes"        : ["Routes/"],
+        "Middleware"    : ["Middleware/"],
+        "Components"    : ["Components/"]
+    }
   },
   "include": [
-    "src"
+    "./src",
   ]
 }

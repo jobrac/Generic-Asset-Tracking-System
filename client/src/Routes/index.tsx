@@ -1,20 +1,13 @@
 import React from 'react';
-import * as Component from '../Components';
-import {ComponentMiddleware, LoginMiddleware} from '../Middleware';
+import * as Component from 'Components';
+import {ComponentMiddleware, LoginMiddleware} from 'Middleware';
 import {
     BrowserRouter,
     Route,
     Switch
 } from 'react-router-dom'
 
-import {
-    Container
-} from '@material-ui/core'
-
-
 class Navigations extends React.Component<any,any>{
-
-
 
     render(){
         return(
