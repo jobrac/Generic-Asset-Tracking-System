@@ -1,0 +1,7 @@
+Next change
+
+1. Extract Navigation into two component
+2. Topbar already finished
+3. Changes Classes into hooks
+4. Reorganize routes (create a named routes).
+5. Update Redux actions
