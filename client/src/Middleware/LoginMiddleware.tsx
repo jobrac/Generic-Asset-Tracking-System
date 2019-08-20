@@ -1,44 +1,33 @@
-import React from 'react';
-import { Redirect } from 'react-router'
+import React, { useEffect } from 'react';
+import { Redirect, withRouter } from 'react-router'
 import {Token} from 'Services';
 import {Login} from 'Components';
 
-class LoginMiddleware extends React.Component<any,any>{
+const LoginMiddleware=(props:any) => {
 
-    constructor(props:any){
-        super(props);
-
-        this.state = {
-            finish : false,
-            token : false,
-        }
-
-    }
-
-    async componentDidMount(){
+    const [ finish, setFinish ] = React.useState(false);
+    const [ token, setToken ] = React.useState(false);
+    
+    async function check(){
         if (await Token.valid()){
-            this.setState({
-                finish : true,
-                token : true,
-            })
+            setToken(true);
         }
+        setFinish(true);
+    }
+    
+    useEffect(() => {
+        check();
+    },[]);
 
-        this.setState({
-            finish : true,
-        })
+    if(!finish){
+        return null;
+    }
+    
+    if(token){
+        return <Redirect to={{ pathname : '/'}} />;
     }
 
-    render(){
-        if(!this.state.finish){
-            return null;
-        }
-
-        if(this.state.token){
-            return <Redirect to={{ pathname : '/'}} />;
-        }
-
-        return <Login {...this.props} />;
-    }
+    return <Login {...props} />;
 }
 
-export default LoginMiddleware;
+export default withRouter(LoginMiddleware);

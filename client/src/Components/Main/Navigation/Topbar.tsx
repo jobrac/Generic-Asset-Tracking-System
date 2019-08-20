@@ -6,7 +6,12 @@ import './NavigationStyle.scss';
 
 interface Props{
     
-    state           :   any,
+    state           :   {
+        width       :   number,
+        sidebar     :   boolean,
+        user        :   any,
+        search      :   boolean
+    },
     logo            :   string,
     menu_title      :   string,
     user            :   any,

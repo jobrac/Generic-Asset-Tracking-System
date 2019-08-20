@@ -1,12 +1,10 @@
 import React from 'react';
 
-class Home extends React.Component<any,any>{
+const Home = (props:any) =>{
 
-    render(){
-        return(
-            <div>Hey i'm in home</div>
-        )
-    }
+    return(
+        <div>Hey i'm in home</div>
+    )
 }
 
 export default Home;

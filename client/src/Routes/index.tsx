@@ -1,30 +1,35 @@
 import React from 'react';
+import {ComponentMiddleware} from 'Middleware';
+import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import * as Component from 'Components';
-import {ComponentMiddleware, LoginMiddleware} from 'Middleware';
-import {
-    BrowserRouter,
-    Route,
-    Switch
-} from 'react-router-dom'
+import {OutsideNav} from './OutsideNav';
+import {InsideNav} from './InsideNav';
 
-class Navigations extends React.Component<any,any>{
-
-    render(){
-        return(
-            <React.Fragment>
-                <BrowserRouter>
-                    <Switch>  
-                        <Route exact path ="/login" component={LoginMiddleware} />
-                        <Route path ="/" strict>
-                            <Component.Navigation>
-                                <Route exact path ="/" render= {(props) => <ComponentMiddleware {...props} component={Component.Home} />}/>
-                            </Component.Navigation>
-                        </Route>
-                    </Switch>
-                </BrowserRouter>
-            </React.Fragment>
-        );
-    }
+const Navigations = (props:any) =>{
+    return(
+        <React.Fragment>
+            <BrowserRouter>
+                <Switch>
+                    {
+                        OutsideNav.map((element,index) => 
+                            <Route exact path ={element.path} component={element.component} key={index} />
+                        )
+                    }
+                   
+                    <Route path ="/" strict>
+                        <Component.Navigation>
+                            {
+                                InsideNav.map((element,index) => 
+                                    <Route exact path ={element.path} render= {(props) => <ComponentMiddleware {...props} component={element.component} />} key={index} />
+                                    // <Route exact path ={element.path} component={element.component} key={index} />
+                                )
+                            }
+                        </Component.Navigation>
+                    </Route>
+                </Switch>
+            </BrowserRouter>
+        </React.Fragment>
+    );
 }
 
 export default Navigations;
