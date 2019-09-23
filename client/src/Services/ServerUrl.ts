@@ -1,4 +1,4 @@
-const server_url = 'http://192.168.0.193:8000/api/';
+const server_url = process.env.REACT_APP_API_URL
 
 const prefix={
     auth : 'auth/',

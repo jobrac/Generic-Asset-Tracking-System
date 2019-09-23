@@ -12,7 +12,7 @@ import { withRouter } from 'react-router';
 
 
 const menu_title = "Asset Management";
-const logo = "/img/apsoft-logo.png";
+const logo = process.env.REACT_APP_LOGO;
 const sidebar_properties = [
 	{
 		name : "Dashboard",
