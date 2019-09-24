@@ -29,7 +29,7 @@ go back to repo root folder
 
 ```sh
 $ cd client
-$ npm init
+$ npm install
 $ npm run build
 ```
 `if something went wrong just google it !!!`
