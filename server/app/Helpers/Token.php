@@ -24,7 +24,12 @@ class Token{
 	*/
 	
 	static public function create(){
-		$payload = JWTFactory::sub(Auth::user()->id)->make();
+		
+
+		$payload = JWTFactory::make();
+		// dd($payload);
+
+
 		return JWTAuth::encode($payload)->get();
 	}
 
