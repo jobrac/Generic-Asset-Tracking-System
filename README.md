@@ -2,7 +2,7 @@
 
 This project is a generic version of Asset Management System for NUSERV
 
-### Language Used
+### Languages Used
  - PHP (Laravel)
  - Reactjs
  
@@ -33,3 +33,7 @@ $ npm init
 $ npm run build
 ```
 `if something went wrong just google it !!!`
+
+# Updates From Original Project
+* Replaced Passport Authentication with JWT
+* Removed some bloates and unnecessary lines of code.
