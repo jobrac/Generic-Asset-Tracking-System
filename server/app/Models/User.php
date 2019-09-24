@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Traits\UniqueUndeletedTrait;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
+// use Laravel\Passport\HasApiTokens;
 use DB;
 
 //JWT
@@ -24,7 +24,7 @@ class User extends SnipeModel implements AuthenticatableContract, CanResetPasswo
 
     protected $presenter = 'App\Presenters\UserPresenter';
     use SoftDeletes, ValidatingTrait;
-    use Authenticatable, Authorizable, CanResetPassword, HasApiTokens;
+    use Authenticatable, Authorizable, CanResetPassword/*, HasApiTokens*/;
     use UniqueUndeletedTrait;
     use Notifiable;
     use Presentable;
@@ -584,6 +584,8 @@ class User extends SnipeModel implements AuthenticatableContract, CanResetPasswo
      */
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+            'permissions' =>  json_decode($this->permissions)
+        ];
     }
 }
