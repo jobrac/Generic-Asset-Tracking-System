@@ -1,16 +1,15 @@
 import Cookies from 'universal-cookie';
-import { Requests } from 'Services';
+// import { Requests } from 'Services';
 
 export default class Token{
-    
+        
     public static save(token:any):void{
         let a = new Date();
-        a.setMinutes(a.getMinutes() + 30);
+        a.setMinutes(a.getMinutes() + 32); //1440 1 day
 
         const cookies = new Cookies();
         cookies.set('token',token,{
             expires: a,
-            maxAge : 1800,
         })
     }
 
@@ -27,42 +26,22 @@ export default class Token{
     }
 
     public static get():any{
-        this.update();
-        return new Cookies().get('token');
+        let token = new Cookies().get('token');
+
+        if(token !== '' || token !== null){
+            this.update();
+        }
+        return token;
     }
 
-    public static exist():any{
+    public static exist():any{  
         const cookies = new Cookies();
         const token = cookies.get('token');
 
         if(token === undefined || token === null || token === ''){
             return false;
         }
-
         return true;
-    }
-
-    /**
-     * Check token's validity and refreshes if invalid
-     * 
-     * @returns bool
-     */
-
-    public static async valid(){
-
-        if(Token.exist()){ 
-            const a:any = await Requests.Auth.check();
-
-            if(a.network_error || a.status !== 200 ){
-                this.remove();
-                return false;
-            }else{
-                this.update();
-                return true;
-            }
-
-        }
-        return false;
     }
 
 }

@@ -4,80 +4,19 @@ import {Dashboard,Laptop, Assignment, Mouse, BatteryFull, Keyboard, AssignmentIn
 import Topbar from './Topbar';
 import SidebarDesktop from './SidebarDesktop';
 import './NavigationStyle.scss';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 import {Token} from 'Services';
 import SidebarMobile from './SidebarMobile';
 import SidebarList from './SidebarList';
 import { withRouter } from 'react-router';
+import { LoggedIn } from 'Redux/Actions'
 
 
 const menu_title = "Asset Management";
-const logo = process.env.REACT_APP_LOGO;
-const sidebar_properties = [
-	{
-		name : "Dashboard",
-		icon : Dashboard,
-		url  : "/" 
-	},{
-		name : "Assets",
-		icon : Laptop,
-		props: [
-			{name : "List All", 		url  : "/assets"},
-			{name : "Bulk Checkout", 	url : "/assets/bulkcheckout"},
-			{name : "Requested", 		url : "/assets/requested"},
-			{name : "Deleted", 			url : "/assets/deleted"},
-			{name : "Asset Maintenance",url : "/assets/maintenace"},
-			{name : "Bulk Audit", 		url : "/assets/bulkaudit"},
-		]
-	},{
-		name : "Licenses",
-		icon : Assignment,
-		url  : '/licenses',
-	},{
-		name : "Accessories",
-		icon :  Mouse,
-		url  : "/accessories", 
-	},{
-		name : "Consumables",
-		icon : BatteryFull,
-		url  : "/consumables",
-	},{
-		name : "Components",
-		icon : Keyboard,
-		url  : "/components",
-	},{
-		name : "Users",
-		icon : AssignmentInd,
-		url  : "/users",
-	},{
-		name : "Imports",
-		icon : SaveAlt,
-		url  : "/imports",
-	},{
-		name : "Settings",
-		icon : Settings,
-		url  : "/settings",
-		props: [
-			{name : "List All", 		url  : "/assets"},
-			{name : "Bulk Checkout", 	url : "/assets/bulkcheckout"},
-			{name : "Requested", 		url : "/assets/requested"},
-			{name : "Deleted", 			url : "/assets/deleted"},
-			{name : "Asset Maintenance",url : "/assets/maintenace"},
-			{name : "Bulk Audit", 		url : "/assets/bulkaudit"},
-		]
-	},{
-		name : "Reports",
-		icon : Print,
-		url  : "/reports",
-	},{
-		name : "Requestable",
-		icon : PlaylistAddCheck,
-		url  : "/requestables", 
-	}
-]
-
+const logo = process.env.REACT_APP_INDEKS;
 
 const Navigation = (props:any) => {
+	
 	
 	const [ sidebar , setSidebar ] = React.useState(false);
 	const [ sidebarProps, setSidebarProps ] = React.useState({});
@@ -85,7 +24,9 @@ const Navigation = (props:any) => {
 	const [ width, setWidth ] = React.useState( window.innerWidth );
 	const [ search, setSearch ] = React.useState( false );
 	const [ user, setUser ] = React.useState(null);
-	const reduxUser = useSelector( (state:any) => state.UserAccount.data);
+	const reduxUser = useSelector( (state:any) => state.UserAccount);
+	const dispatch = useDispatch();
+	const sidebar_properties = useSelector((state:any) => state.Route.nav);
 
 	
 
@@ -95,7 +36,7 @@ const Navigation = (props:any) => {
 		window.addEventListener('resize', updateBrowserWidth);
 
 		let sidebars:any = {};
-		sidebar_properties.forEach((value) =>{
+		sidebar_properties.forEach((value:any) =>{
 			if(value.props){
 				sidebars[value.name] = false;
 			}
@@ -131,7 +72,7 @@ const Navigation = (props:any) => {
 
 	const toggleSearch = ():void=>{
 
-		//toggle backdrop in sidebar when toggling search
+		
 		if(sidebar){
 			toggleSidebar();
 		}
@@ -148,6 +89,7 @@ const Navigation = (props:any) => {
 	const logout = () =>{
 		Token.remove();
 		props.history.push('/login');
+		dispatch(LoggedIn(false));
 	}
 
 
@@ -224,7 +166,7 @@ const Navigation = (props:any) => {
 		        onOpen={swipeDrawer}
 			>
 		    	<SidebarMobile
-					logo 		= {logo}
+					logo 		= {process.env.REACT_APP_LOGO}
 					menu_title	= {menu_title}
 					sidebar_list= {
 						<SidebarList
@@ -265,18 +207,19 @@ const Navigation = (props:any) => {
 				toggleSidebar	= {toggleSidebar}
 			/>
 		
-			<div className="container-body">
+			{/* <div className="container-body"> */}
 				<Backdrop open={sidebar} onClick={toggleSidebar} className="backdrop-desktop"/>
 				<Backdrop open={search} onClick={toggleSearch} className="backdrop-search"/>
-					<Container maxWidth="xl">
-						{props.children}
-					</Container>
-				</div>
+			{/* </div> */}
 		</div>
 	)
 }
 
 export default withRouter(Navigation);
+
+
+
+
 
 //Do not touch below if you dont want to fuck-up !!!
 // class Navigation extends React.Component<any,any>{

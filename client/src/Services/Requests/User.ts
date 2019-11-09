@@ -47,26 +47,20 @@ interface Create extends Update{
     password_confirmation : string,
 }
 
-let format:Format = {
-    network_error : false,
-    status        : 0,
-    data          : '',
-}
-
 class User extends StaticMethods{
 
     static async show(user?:Show){
-        
     }
 
     static async get(id:number){
-        if(!Token.exist()){
-            format.status = 401;
-            format.data = 'Cookies Not Found';
-            return format;
+        
+        let format:Format = {
+            network_error : false,
+            status        : 0,
+            data          : '',
         }
 
-        const header = this.header(Token.get());
+        const header = super.header(Token.get());    
 
         await axios({
             method  :   "GET",
@@ -76,15 +70,10 @@ class User extends StaticMethods{
             format.status = response.status;
             format.data = response.data;
         }).catch( async (error) =>{
-            format = await this.handle_error({
-                response : error.response,
-                format : format,
-                callback : this.get,
-                auth    : true,
-            });
-        })
-        return format;
+            format = await this.Error(error,this.get,id);
+        });
 
+        return format;
     }
 
     static async update(user:Update){
@@ -101,6 +90,51 @@ class User extends StaticMethods{
 
     static async delete(id:number){
 
+    }
+
+
+    public static async Error(error:any,callback:Function,params?:any){
+
+        let format:Format = {
+            network_error : false,
+            status : 0,
+            data : '',
+        }
+
+        if(!error.response){
+            format.network_error = true;
+            return format;
+        }
+
+        if(error.response.status === 401){
+            if(!Token.exist()){
+                return format;
+            }
+
+            let a = await this.refresh();
+            
+            if(a.network_error){
+                format.network_error = true;
+                return format;
+            }
+
+            if(a.status === 200){                
+                Token.save(a.data.token);
+
+                if(params === null ){
+                    console.log('called without parameter');
+                    return callback();
+                }
+                console.log('called with parameter of '+params);
+                return callback(params);
+            }
+        }
+
+        return {
+            network_error : false,
+            status        : error.response.status,
+            data          : error.response.data,
+        }
     }
 
 }

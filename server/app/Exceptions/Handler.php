@@ -48,15 +48,14 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         // Handle Ajax requests that fail because the model doesn't exist
-        if ($request->ajax() || $request->wantsJson()) {
 
+        if ($request->expectsJson() || $request->wantsJson()) {
             if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
                 $className = last(explode('\\', $exception->getModel()));
                 return response()->json(Helper::formatStandardApiResponse('error', null, $className . ' not found'), 200);
-            }
+            }          
 
             if ($this->isHttpException($exception)) {
-
                 $statusCode = $exception->getStatusCode();
 
                 switch ($exception->getStatusCode()) {
@@ -64,6 +63,8 @@ class Handler extends ExceptionHandler
                        return response()->json(Helper::formatStandardApiResponse('error', null, $statusCode . ' endpoint not found'), 404);
                     case '405':
                         return response()->json(Helper::formatStandardApiResponse('error', null, 'Method not allowed'), 405);
+                    case '429':
+                        return response()->json(Helper::formatStandardApiResponse('error', null, 'Too many request'), 429);
                     default:
                         return response()->json(Helper::formatStandardApiResponse('error', null, $statusCode), 405);
 

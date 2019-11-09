@@ -4,7 +4,9 @@ import {AccountCircle} from '@material-ui/icons';
 import './LoginStyle.scss';
 import {Requests,Token} from 'Services';
 import { Redirect } from 'react-router';
+import {LoggedIn,UserAccount} from 'Redux/Actions';
 import jwt_decode from 'jwt-decode';
+import { useDispatch, useSelector } from 'react-redux';
 
 const logo = process.env.REACT_APP_LOGO;
 
@@ -15,6 +17,8 @@ const Login = (props:any) => {
     const [ submit, setSubmit ] = React.useState(false);
     const [ credentials, setCredentials ] = React.useState({username : '',password : '',});
     const [ error, setError ] = React.useState({status   : false,message  : ''});
+    const dispatch = useDispatch();
+    const route = useSelector( (state:any) => state.Route);
 
     const update_input_text = (event:any) => {
         setCredentials({
@@ -89,14 +93,17 @@ const Login = (props:any) => {
                 Token.remove();
                 return;
             }
-
-            const returnUrl = props.location.state;
             
+            const returnUrl = props.location.state;
+            dispatch(UserAccount(user.data,route));
             if(!returnUrl){
                 setRedirect('/');
+                dispatch(LoggedIn(true));
                 return;
             }
             setRedirect(returnUrl.from);
+
+            dispatch(LoggedIn(true));
             return;
         }
         setSubmit(false);
@@ -113,7 +120,8 @@ const Login = (props:any) => {
     }
 
     return(
-        <Container maxWidth="lg">
+        <div>
+        {/* // <Container maxWidth="lg"> */}
             <div className="logo-login">
                 <img src={logo} alt="logo" />
                 <div className="logo-title">
@@ -176,7 +184,8 @@ const Login = (props:any) => {
                     </form>
                 </CardContent>
             </Card>
-        </Container>
+        {/* </Container> */}
+        </div>
     );
 
 }

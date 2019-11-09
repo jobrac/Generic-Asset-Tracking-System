@@ -1,15 +1,11 @@
 import { UserAccount as UA} from '../Actions/Types';
 
-const initialState = {
-    data : {}
-};
+const initialState = {};
 
 export default function(state = initialState, action:any) {
 	switch (action.type) {
     	case UA:
-      		return {
-        		data :   state.data      = action.payload,
-            }
+      		return action.payload
     	default:
       		return state;
  	}

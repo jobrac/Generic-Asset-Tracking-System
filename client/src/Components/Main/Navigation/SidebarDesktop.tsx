@@ -20,8 +20,8 @@ const SidebarDesktop = (props:Props) => {
         	variant="permanent"
         	className={props.state.sidebar ? "sidebar-open" : "sidebar-close"}
 			open={props.state.sidebar}
-			onMouseEnter={()=> props.toggleSidebar()}
-			// onMouseLeave={()=> this.toggleSidebar()}
+			// onMouseEnter={()=> props.toggleSidebar()}
+			// onMouseLeave={()=> props.toggleSidebar()}
       	>
         	{props.sidebar_list}
       	</Drawer>

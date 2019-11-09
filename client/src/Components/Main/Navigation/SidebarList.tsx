@@ -17,7 +17,7 @@ const SidebarList = (props:props) => {
 
     let list = props.sidebar_properties;
     return(
-        <List>
+        <List className="sidebar-list">
             {list.map((text:any, index:number) => (
                 <React.Fragment key={index} >
                     <ListItem button onClick={()=>{

@@ -1,7 +1,8 @@
 import React from 'react';
-import {InputBase, IconButton, Typography,CssBaseline, Toolbar, AppBar, Button, Avatar, Popover } from '@material-ui/core';
-import {Assignment, Search, ArrowDropDown,AssignmentReturned, Edit, ExitToApp} from '@material-ui/icons';
+import {InputBase, IconButton, Typography,CssBaseline, Toolbar, AppBar, Button, Avatar, Popover, Badge, Card, CardContent, CardActions, CardHeader, List, ListItem, ListItemIcon, ListItemText, Divider, LinearProgress } from '@material-ui/core';
+import {Assignment, Search, ArrowDropDown,AssignmentReturned, Edit, ExitToApp, Notifications} from '@material-ui/icons';
 import './NavigationStyle.scss';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 
 interface Props{
@@ -25,15 +26,25 @@ interface Props{
 
 
 const Topbar = (props:Props) => {
+
+    //for notification popover
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
+
     return(
         <React.Fragment>
             <CssBaseline />
-            <AppBar
-                position="fixed"
-                className="appbar"
-            >
+            
+            <AppBar position="fixed" className="appbar" >
                 <Toolbar>
-
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -50,23 +61,161 @@ const Topbar = (props:Props) => {
                         </span>
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                        <img className="navigation-logo" src={props.logo} alt={props.menu_title} />{props.menu_title}
+                        <img className="navigation-logo" src={props.logo} alt={props.menu_title} />
+                        <div className="title-navigation">
+                            {props.menu_title}
+                        </div>
                     </Typography>
-                        <div className="search">
+                        <div className={ props.state.search ? "search search-toggles" : "search" }>
                             <div className="search-icon">
                                 <Search />
                             </div>
                             <InputBase
                                 className="search-input"
                                 name="search"
-                                placeholder="Search…"
+                                placeholder="Lookup for assets..."
                                 inputProps={{ 'aria-label': 'search' }}
                                 onFocus={ () => props.toggleSearch() }
+                                autoComplete = "off"
                             />
 
                         </div>
 
                         
+                        <div className="add-new-top-bar">
+                            {/* <Button
+                                color = "primary"
+                                variant = "contained"
+                                className = "menu-max-add"
+                            >
+                                Add New
+                            </Button> */}
+                            <IconButton
+                                aria-label="more"
+                                aria-controls="long-menu"
+                                aria-haspopup="true"
+                                className = "menu-min-add"
+                                onClick={handleClick}
+                                // onClick={handleClick}
+                            >
+                                <Badge badgeContent={4} color="primary">
+                                    <Notifications style={{font:'white'}} />
+                                </Badge>
+                            </IconButton>
+
+                            <Popover
+                            id={id}
+                            open={open}
+                            anchorEl={anchorEl}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
+                            }}
+                            // transformOrigin={{
+                            //     vertical: 'top',
+                            //     horizontal: 'center',
+                            // }}
+                            >
+                               <Card >
+                                   <CardHeader
+                                        title ="You have 0 items below or almost below minimum quantity levels"
+                                        className="notification-header"
+                                   />
+                                    <CardContent className="notification-content">
+                                    <List>
+                                        <ListItem button>
+                                            <ListItemText 
+                                                primary="Inbox"
+                                                secondary = {
+                                                    <Typography component="div">
+                                                        <LinearProgress variant="determinate" value={90} />
+                                                    </Typography>
+                                                }
+                                            />
+                                            <div className="list-remaining">
+                                                20 Remaining
+                                            </div>
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemText 
+                                                primary="Drafts"
+                                                secondary = {
+                                                    <Typography component="div">
+                                                        <LinearProgress variant="determinate" value={90} />
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemText 
+                                                primary="Drafts"
+                                                secondary = {
+                                                    <Typography component="div">
+                                                        <LinearProgress variant="determinate" value={90} />
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemText 
+                                                primary="Drafts"
+                                                secondary = {
+                                                    <Typography component="div">
+                                                        <LinearProgress variant="determinate" value={90} />
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemText 
+                                                primary="Drafts"
+                                                secondary = {
+                                                    <Typography component="div">
+                                                        <LinearProgress variant="determinate" value={90} />
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemText 
+                                                primary="Drafts"
+                                                secondary = {
+                                                    <Typography component="div">
+                                                        <LinearProgress variant="determinate" value={90} />
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                        <ListItem button>
+                                            <ListItemText 
+                                                primary="Drafts"
+                                                secondary = {
+                                                    <Typography component="div">
+                                                        <LinearProgress variant="determinate" value={90} />
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    </List>
+                                    </CardContent>
+                                    <CardActions className="notification-footer">
+                                        <Button color="primary" variant="contained" size="small">View All</Button>
+                                    </CardActions>
+                                </Card>
+                            </Popover>
+
+{/* 
+                            <IconButton
+                                aria-label="more"
+                                aria-controls="long-menu"
+                                aria-haspopup="true"
+                                className = "menu-min-add"
+                                // onClick={handleClick}
+                            >
+                                <MoreVertIcon />
+                            </IconButton> */}
+                        </div>
                         <div className="user-account">
                             <Button
                                 color = "inherit"
@@ -100,7 +249,7 @@ const Topbar = (props:Props) => {
                             // 		top : 200,
                             // 		left: 400
                             // 	}
-                            // }
+                            // }e
                             
                         >	
                             <div className="user-menu-profile">

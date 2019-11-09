@@ -8,6 +8,7 @@ use App\Models\User;
 use Auth;
 use Status;
 use App\Helpers\Token;
+use App\Helpers\Helper;
 use JWTAuth;
 
 class AuthController extends Controller{
@@ -27,45 +28,25 @@ class AuthController extends Controller{
 
         }
 
-        return response()->json(
-        	[
-        		'status' 	=> 	'error',
-        		'message'	=>	'An Error has occured! Unauthenticated.',
-        	]
-        	,Status::HTTP_UNAUTHORIZED
-    	);
+        return response()->json(Helper::formatStandardApiResponse('error', null, "Credentials not found"), 401);
     }
 
     public function refresh(){
 
         try {
             JWTAuth::parseToken()->authenticate();
-        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+        }catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             return response()->json([
                 'token' => Token::refresh(),
                 'token_type' => 'bearer',
                 'expires_in' => auth()->factory()->getTTL() * 60
             ]);
-        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-            return response()->json(
-                [
-                    "message" => "Token Invalid"
-                ] , Status::HTTP_UNAUTHORIZED);
-        }catch (\Tymon\JWTAuth\Exception\TokenBlacklistedExceptions $e) {
-            return response()->json(
-                [
-                    "message" => "Token Invalid"
-                ] , Status::HTTP_UNAUTHORIZED);
-        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
-            return response()->json(
-                [
-                    "message" => "Token not found"
-                ] , Status::HTTP_BAD_REQUEST);
-        }catch(\Illuminate\Http\Exceptions\ThrottleRequestsException $e){
-            return response()->json(
-                [
-                    "message" => "Too many request"
-                ] , Status::HTTP_TOO_MANY_REQUESTS);
+        }catch (\Tymon\JWTAuth\Exceptions\TokenBlacklistedException $e) {
+            return response()->json(Helper::formatStandardApiResponse('error', null, "Token invalid"), 400);
+        }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json(Helper::formatStandardApiResponse('error', null, "Token invalid"), 400);
+        }catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(Helper::formatStandardApiResponse('error', null, "Token not found"), 400);
         }
 
 
