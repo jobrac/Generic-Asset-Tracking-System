@@ -1,6 +1,7 @@
 import React from 'react';
 import {Collapse, ListItemText, ListItemIcon, ListItem, List } from '@material-ui/core';
 import {ExpandLess, ExpandMore, ArrowRightAlt} from '@material-ui/icons';
+import {useSelector} from 'react-redux';
 
 
 interface props{
@@ -9,18 +10,22 @@ interface props{
     sidebarProps       : any,
 
 
+
     //functions
     setSidebarProps(sidebar:any): void;
     toggleSidebar()             : void;
 }
 const SidebarList = (props:props) => {
 
+    //state
+    const control = useSelector((state:any)=>state.Stat.control);
+        
     let list = props.sidebar_properties;
     return(
         <List className="sidebar-list">
             {list.map((text:any, index:number) => (
-                <React.Fragment key={index} >
-                    <ListItem button onClick={()=>{
+                <React.Fragment key={index}>
+                    <ListItem className={control === text.name ? "active-nav" : ""} button onClick={()=>{
                         
                         if(!props.sidebar){
                             props.toggleSidebar();

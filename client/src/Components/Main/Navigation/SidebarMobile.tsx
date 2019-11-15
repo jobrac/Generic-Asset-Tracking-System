@@ -19,7 +19,7 @@ const SidebarMobile = (props:Props) => {
                 <p>{props.menu_title}</p>
             </div>
 
-            <Divider />
+            {/* <Divider /> */}
             {props.sidebar_list}
         </div>
     );

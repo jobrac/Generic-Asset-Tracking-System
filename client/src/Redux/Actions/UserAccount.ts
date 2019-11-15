@@ -6,7 +6,6 @@ export const UserAccount = (a:any,route:any) => {
 
         
         let routes = route.list;
-        console.log(route.list);
         Object.keys(a.permissions).forEach( (value:any) =>{
             if(value !== 'superuser' && value !== 'admin'){
                 if(a.permissions[value].view === 0){
@@ -15,9 +14,9 @@ export const UserAccount = (a:any,route:any) => {
             }
         });
 
-        
-        let nav = route.nav;
 
+        // dont forget this
+        console.error("Process Sidebar Navigations based from route list in USERACCOUNT actions REDUX");
 
         dispatch({
             type    : Route,

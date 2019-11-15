@@ -224,7 +224,7 @@ const Topbar = (props:Props) => {
                             >
                                 <Avatar 
                                     alt="Jobel Racines" 
-                                    src="/img/sample.jpg"
+                                    src={props.user.avatar}
                                     className = "user-avatar"
                                 />
                                 <div className="user-name">
@@ -256,7 +256,7 @@ const Topbar = (props:Props) => {
                                 <div className="header-user-profile">
                                     <Avatar 
                                         alt="Jobel Racines" 
-                                        src="/img/sample.jpg"
+                                        src={props.user.avatar}
                                         className="header-user-profile-avatar"
                                     />
 

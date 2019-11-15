@@ -2,9 +2,9 @@ import {StaticMethods, Format} from './StaticMethods';
 import Token from "../Token";
 import Url from '../ServerUrl';
 import axios from 'axios';
-import {Get,Show,Create,Update, Accessories,Asset,Patch,Delete} from 'Types/Requests/User';
+import {Get,Show,Create,Update, Delete,GetByAssetTag,GetBySerialNumber,Checkout,Checkin,Audit} from 'Types/Requests/Assets';
 
-class User extends StaticMethods{
+class Assets extends StaticMethods{
 
     static async show(user:Show){
         let format:Format = {
@@ -17,7 +17,7 @@ class User extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.user,
+            url     :   Url.hardware,
             headers :   header,
             data    :   user,
         }).then( response => {
@@ -41,7 +41,7 @@ class User extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.user+user.id,
+            url     :   Url.hardware+user.id,
             headers :   header,
         }).then( response => {
             format.status = response.status;
@@ -64,7 +64,7 @@ class User extends StaticMethods{
 
         await axios({
             method  :   "PUT",
-            url     :   Url.user+user.id,
+            url     :   Url.hardware+user.id,
             headers :   header,
             data    :   user
         }).then( response => {
@@ -77,7 +77,7 @@ class User extends StaticMethods{
         return format;
     }
 
-    static async patch(user:Patch){
+    static async patch(user:Update){
         let format:Format = {
             network_error : false,
             status        : 0,
@@ -88,7 +88,7 @@ class User extends StaticMethods{
 
         await axios({
             method  :   "PATCH",
-            url     :   Url.user+user.id,
+            url     :   Url.hardware+user.id,
             headers :   header,
             data    :   user
         }).then( response => {
@@ -112,7 +112,7 @@ class User extends StaticMethods{
 
         await axios({
             method  :   "POST",
-            url     :   Url.user,
+            url     :   Url.hardware,
             headers :   header,
             data    :   user
         }).then( response => {
@@ -125,7 +125,7 @@ class User extends StaticMethods{
         return format;
     }
 
-    static async assets(user:Asset){
+    static async asset(user:GetByAssetTag){
         let format:Format = {
             network_error : false,
             status        : 0,
@@ -136,19 +136,19 @@ class User extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.user+user.id+'/assets',
+            url     :   Url.hardware+'bytag/'+user.asset_tag,
             headers :   header,
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
         }).catch( async (error) =>{
-            format = await this.Error(error,this.assets,user);
+            format = await this.Error(error,this.asset,user);
         });
 
         return format;
     }
 
-    static async accessories(user:Accessories){
+    static async serial(user:GetBySerialNumber){
         let format:Format = {
             network_error : false,
             status        : 0,
@@ -159,13 +159,13 @@ class User extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.user+user.id+'/accessories',
+            url     :   Url.hardware+'byserial/'+user.serial,
             headers :   header,
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
         }).catch( async (error) =>{
-            format = await this.Error(error,this.accessories,user);
+            format = await this.Error(error,this.serial,user);
         });
         
         return format;
@@ -182,7 +182,7 @@ class User extends StaticMethods{
 
         await axios({
             method  :   "delete",
-            url     :   Url.user+user.id,
+            url     :   Url.hardware+user.id,
             headers :   header,
         }).then( response => {
             format.status = response.status;
@@ -193,6 +193,80 @@ class User extends StaticMethods{
 
         return format;
     }
+
+    static async checkout(user:Checkout){
+        let format:Format = {
+            network_error : false,
+            status        : 0,
+            data          : '',
+        }
+
+        const header = super.header(Token.get());    
+
+        await axios({
+            method  :   "POST",
+            url     :   Url.hardware+user.id+'/checkout',
+            headers :   header,
+            data    :   user
+        }).then( response => {
+            format.status = response.status;
+            format.data = response.data;
+        }).catch( async (error) =>{
+            format = await this.Error(error,this.checkout,user);
+        });
+
+        return format;
+    }
+
+    static async checkin(user:Checkin){
+        let format:Format = {
+            network_error : false,
+            status        : 0,
+            data          : '',
+        }
+
+        const header = super.header(Token.get());    
+
+        await axios({
+            method  :   "POST",
+            url     :   Url.hardware+user.id+'/checkin',
+            headers :   header,
+        }).then( response => {
+            format.status = response.status;
+            format.data = response.data;
+        }).catch( async (error) =>{
+            format = await this.Error(error,this.checkin,user);
+        });
+
+        return format;
+    }
+
+    static async audit(user:Audit){
+        let format:Format = {
+            network_error : false,
+            status        : 0,
+            data          : '',
+        }
+
+        const header = super.header(Token.get());    
+
+        await axios({
+            method  :   "POST",
+            url     :   Url.hardware+'/audit',
+            headers :   header,
+            data    :   user
+        }).then( response => {
+            format.status = response.status;
+            format.data = response.data;
+        }).catch( async (error) =>{
+            format = await this.Error(error,this.audit,user);
+        });
+
+        return format;
+    }
+
+    //----------------- next audit due and overdue
+
 
 
     /**
@@ -245,4 +319,4 @@ class User extends StaticMethods{
 
 }
 
-export default User;
+export default Assets;

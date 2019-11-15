@@ -8,6 +8,7 @@ export interface Format{
     data          : any,
 }
 
+
 export class StaticMethods{
     
     public static async delay(ms:number){

@@ -5,7 +5,7 @@ import {useSelector,useDispatch} from 'react-redux';
 import {UserAccount,LoggedIn} from 'Redux/Actions';
 import { Token, Requests } from 'Services';
 import jwt_decode from 'jwt-decode';
-import { Container } from '@material-ui/core';
+import { Container,Link, Breadcrumbs, Typography } from '@material-ui/core';
 
 
 const Navigations = (props:any) =>{
@@ -26,7 +26,7 @@ const Navigations = (props:any) =>{
         // await Requests.StaticMethods.delay(2000);
         if(Token.exist()){
             const token:any = jwt_decode(Token.get());
-            const useraccount = await Requests.User.get(token.sub);
+            const useraccount = await Requests.User.get({id:token.sub});
             
             if(useraccount.network_error){
                 Token.remove();
@@ -63,13 +63,24 @@ const Navigations = (props:any) =>{
 
     return(
         initialized ? 
-            <Container maxWidth="xl">
-
-                
+            <div className="container-fluid">
                 <BrowserRouter>
-                {
-                    status.loggedIn ? <Component.Navigation /> : ''
-                } 
+                    {
+                        status.loggedIn ? 
+                            <React.Fragment>
+                                <Component.Navigation />
+                                <Breadcrumbs separator="›" aria-label="breadcrumb">
+                                    <Link color="inherit" href="/" >
+                                        Home
+                                    </Link>
+                                    <Link color="inherit" href="/getting-started/installation/" >
+                                        Core
+                                    </Link>
+                                    <Typography color="textPrimary">Breadcrumb</Typography>
+                                </Breadcrumbs>
+                            </React.Fragment>     
+                         : ''
+                    }
 
                     <Switch>   
                         {
@@ -86,7 +97,7 @@ const Navigations = (props:any) =>{
                         <Route component={Component.NotFound}/>
                     </Switch>
                 </BrowserRouter>
-            </Container>             
+            </div>             
         : null
     );
 }

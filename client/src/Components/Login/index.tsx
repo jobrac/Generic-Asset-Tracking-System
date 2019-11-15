@@ -57,7 +57,7 @@ const Login = (props:any) => {
                     Token.save(a.data.token);
 
                     const jwt:any = jwt_decode(Token.get()); // get id of current user using JWT payload
-                    const user =await Requests.User.get(jwt.sub);
+                    const user =await Requests.User.get({id:jwt.sub});
                     checkUser(user);
                     break;
                 default :

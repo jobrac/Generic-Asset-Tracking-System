@@ -1,0 +1,128 @@
+@import '~bootstrap/scss/bootstrap';
+
+
+//bootstrap adjusted for material conficts
+*, *::before, *::after {
+    box-sizing: unset;
+}
+
+.table th, .table td {
+    padding: 6px 24px 6px 16px;
+    vertical-align: unset;
+    border-top: unset;
+}
+
+
+
+//material breadcrumbs
+nav.MuiBreadcrumbs-root{
+    font-size: 12px;
+
+    & ol{
+        & li{
+            & p.MuiTypography-colorTextPrimary{
+                font-weight: bolder;
+                font-size: 13px;
+                text-transform: uppercase;
+            }
+        }
+    }
+}
+
+
+//custom paper design component material 
+.paper{
+    position: relative;
+    padding-top: 55px;
+    padding-bottom: 30px;
+
+    //title
+    & .title{
+        position: absolute;
+        top: -15px;
+        left: 20px;
+        width: calc(100% - 44px);
+        font-weight: bolder;
+        padding: 5px;
+        color: aliceblue;
+        box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12);
+        border-radius: 4px;
+        text-transform: uppercase;
+
+        &.primary{
+            background: #3c479e !important;
+        }
+
+        &.secondary{
+            background: #6c757d!important;
+        }
+
+        &.success{
+            background-color: #28a745!important;
+        }
+    }
+
+    & .sticky-bottom-button{ 
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        justify-content: center;
+        outline: none;
+    }
+}
+
+.table{
+    white-space: nowrap;
+    & table{
+        & thead th{
+            position: sticky;
+            top: 0;
+            // background: #5f5757;
+            font-weight: bolder;
+            text-transform: uppercase;
+            // color: white;
+
+            background: #ffffff;
+            color: #3e3838;
+
+
+
+
+            &:first-child{
+                border-radius: 5px 0 0 5px;
+            }
+
+            &:last-child{
+                border-radius: 0 5px 5px 0;
+            }
+        }
+    }
+}
+
+
+//remove outline in button
+button{
+    outline: none !important;
+}
+
+
+//bootstrap global media queries custom
+.container-fluid{
+    width: unset !important;
+    padding-bottom: 30px;
+}
+
+@media (min-width: 576px) {
+
+}
+@media (min-width: 768px) {
+    
+}
+@media (min-width: 992px) {
+    
+}
+@media (min-width: 1200px) {
+
+}

@@ -7,3 +7,5 @@ export const Snackbar = {
     remove  : 'REMOVE_SNACKBAR'
 };
 export const LoggedIn = "LoggedIn";
+export const Control  = "Control";
+export const Breadcrumbs = "Breadcrumbs";
