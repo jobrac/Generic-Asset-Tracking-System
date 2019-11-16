@@ -2,9 +2,9 @@ import {StaticMethods, Format} from './StaticMethods';
 import Token from "../Token";
 import Url from '../ServerUrl';
 import axios from 'axios';
-import {Get,Show,Create,Update, Delete,GetByAssetTag,GetBySerialNumber,Checkout,Checkin,Audit} from 'Types/Requests/Assets';
+import {Get,Show,Create,Update, Delete,Asset} from 'Types/Requests/StatusLabels';
 
-class Assets extends StaticMethods{
+class StatusLabels extends StaticMethods{
 
     static async show(data:Show){
         let format:Format = {
@@ -17,7 +17,7 @@ class Assets extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.hardware,
+            url     :   Url.statuslabels,
             headers :   header,
             data    :   data,
         }).then( response => {
@@ -41,7 +41,7 @@ class Assets extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.hardware+data.id,
+            url     :   Url.statuslabels+data.id,
             headers :   header,
         }).then( response => {
             format.status = response.status;
@@ -64,7 +64,7 @@ class Assets extends StaticMethods{
 
         await axios({
             method  :   "PUT",
-            url     :   Url.hardware+data.id,
+            url     :   Url.statuslabels+data.id,
             headers :   header,
             data    :   data
         }).then( response => {
@@ -88,7 +88,7 @@ class Assets extends StaticMethods{
 
         await axios({
             method  :   "PATCH",
-            url     :   Url.hardware+data.id,
+            url     :   Url.statuslabels+data.id,
             headers :   header,
             data    :   data
         }).then( response => {
@@ -112,7 +112,7 @@ class Assets extends StaticMethods{
 
         await axios({
             method  :   "POST",
-            url     :   Url.hardware,
+            url     :   Url.statuslabels,
             headers :   header,
             data    :   data
         }).then( response => {
@@ -125,7 +125,7 @@ class Assets extends StaticMethods{
         return format;
     }
 
-    static async asset(data:GetByAssetTag){
+    static async asset(data:Asset){
         let format:Format = {
             network_error : false,
             status        : 0,
@@ -136,7 +136,7 @@ class Assets extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.hardware+'bytag/'+data.asset_tag,
+            url     :   Url.statuslabels+data.id+'/assetlist',
             headers :   header,
         }).then( response => {
             format.status = response.status;
@@ -145,29 +145,6 @@ class Assets extends StaticMethods{
             format = await this.Error(error,this.asset,data);
         });
 
-        return format;
-    }
-
-    static async serial(data:GetBySerialNumber){
-        let format:Format = {
-            network_error : false,
-            status        : 0,
-            data          : '',
-        }
-
-        const header = super.header(Token.get());    
-
-        await axios({
-            method  :   "GET",
-            url     :   Url.hardware+'byserial/'+data.serial,
-            headers :   header,
-        }).then( response => {
-            format.status = response.status;
-            format.data = response.data;
-        }).catch( async (error) =>{
-            format = await this.Error(error,this.serial,data);
-        });
-        
         return format;
     }
 
@@ -182,130 +159,13 @@ class Assets extends StaticMethods{
 
         await axios({
             method  :   "delete",
-            url     :   Url.hardware+data.id,
+            url     :   Url.statuslabels+data.id,
             headers :   header,
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
         }).catch( async (error) =>{
             format = await this.Error(error,this.delete,data);
-        });
-
-        return format;
-    }
-
-    static async checkout(data:Checkout){
-        let format:Format = {
-            network_error : false,
-            status        : 0,
-            data          : '',
-        }
-
-        const header = super.header(Token.get());    
-
-        await axios({
-            method  :   "POST",
-            url     :   Url.hardware+data.id+'/checkout',
-            headers :   header,
-            data    :   data
-        }).then( response => {
-            format.status = response.status;
-            format.data = response.data;
-        }).catch( async (error) =>{
-            format = await this.Error(error,this.checkout,data);
-        });
-
-        return format;
-    }
-
-    static async checkin(data:Checkin){
-        let format:Format = {
-            network_error : false,
-            status        : 0,
-            data          : '',
-        }
-
-        const header = super.header(Token.get());    
-
-        await axios({
-            method  :   "POST",
-            url     :   Url.hardware+data.id+'/checkin',
-            headers :   header,
-        }).then( response => {
-            format.status = response.status;
-            format.data = response.data;
-        }).catch( async (error) =>{
-            format = await this.Error(error,this.checkin,data);
-        });
-
-        return format;
-    }
-
-    static async audit(data:Audit){
-        let format:Format = {
-            network_error : false,
-            status        : 0,
-            data          : '',
-        }
-
-        const header = super.header(Token.get());    
-
-        await axios({
-            method  :   "POST",
-            url     :   Url.hardware+'audit',
-            headers :   header,
-            data    :   data
-        }).then( response => {
-            format.status = response.status;
-            format.data = response.data;
-        }).catch( async (error) =>{
-            format = await this.Error(error,this.audit,data);
-        });
-
-        return format;
-    }
-
-    static async auditDue(){
-        let format:Format = {
-            network_error : false,
-            status        : 0,
-            data          : '',
-        }
-
-        const header = super.header(Token.get());    
-
-        await axios({
-            method  :   "POST",
-            url     :   Url.hardware+'audit/due',
-            headers :   header,
-        }).then( response => {
-            format.status = response.status;
-            format.data = response.data;
-        }).catch( async (error) =>{
-            format = await this.Error(error,this.auditDue);
-        });
-
-        return format;
-    }
-
-    static async auditOverDue(){
-        let format:Format = {
-            network_error : false,
-            status        : 0,
-            data          : '',
-        }
-
-        const header = super.header(Token.get());    
-
-        await axios({
-            method  :   "POST",
-            url     :   Url.hardware+'audit/overdue',
-            headers :   header,
-        }).then( response => {
-            format.status = response.status;
-            format.data = response.data;
-        }).catch( async (error) =>{
-            format = await this.Error(error,this.auditOverDue);
         });
 
         return format;
@@ -366,4 +226,4 @@ class Assets extends StaticMethods{
 
 }
 
-export default Assets;
+export default StatusLabels;
