@@ -2,11 +2,11 @@ import {StaticMethods, Format} from './StaticMethods';
 import Token from "../Token";
 import Url from '../ServerUrl';
 import axios from 'axios';
-import {Get,Show,Create,Update, Delete,Asset} from 'Types/Requests/StatusLabels';
+import {Get,Show,Create,Update, Delete,AssetList} from 'Types/Requests/StatusLabels';
 
 class StatusLabels extends StaticMethods{
 
-    static async show(data:Show){
+    static async show(data?:Show){
         let format:Format = {
             network_error : false,
             status        : 0,
@@ -125,7 +125,7 @@ class StatusLabels extends StaticMethods{
         return format;
     }
 
-    static async asset(data:Asset){
+    static async assetList(data:AssetList){
         let format:Format = {
             network_error : false,
             status        : 0,
@@ -142,7 +142,30 @@ class StatusLabels extends StaticMethods{
             format.status = response.status;
             format.data = response.data;
         }).catch( async (error) =>{
-            format = await this.Error(error,this.asset,data);
+            format = await this.Error(error,this.assetList,data);
+        });
+
+        return format;
+    }
+
+    static async asset(){
+        let format:Format = {
+            network_error : false,
+            status        : 0,
+            data          : '',
+        }
+
+        const header = super.header(Token.get());    
+
+        await axios({
+            method  :   "GET",
+            url     :   Url.statuslabels+'assets',
+            headers :   header,
+        }).then( response => {
+            format.status = response.status;
+            format.data = response.data;
+        }).catch( async (error) =>{
+            format = await this.Error(error,this.asset);
         });
 
         return format;

@@ -182,6 +182,8 @@ const initialState = {
 				{name : "Bulk Checkout", 	url : "/assets/bulk-checkout"},
 				{name : "Requested", 		url : "/assets/requested"},
 				{name : "Deleted", 			url : "/assets/deleted"},
+				{name : "Due for Audit",	url	: "/assets/audit-due"},
+				{name : "Overdue for Audit",url	: "/assets/audit-overdue"},
 				{name : "Asset Maintenance",url : "/assets/maintenace"},
 				{name : "Bulk Audit", 		url : "/assets/bulk-audit"},
 			]

@@ -90,6 +90,7 @@ const Navigation = (props:any) => {
 		Token.remove();
 		props.history.push('/login');
 		dispatch(LoggedIn(false));
+		window.location.reload();
 	}
 
 

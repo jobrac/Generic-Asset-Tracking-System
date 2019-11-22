@@ -6,7 +6,7 @@ import {Get,Show,Create} from 'Types/Requests/Accessories';
 
 class Accessories extends StaticMethods{
 
-    static async show(data:Show){
+    static async show(data?:Show){
         let format:Format = {
             network_error : false,
             status        : 0,

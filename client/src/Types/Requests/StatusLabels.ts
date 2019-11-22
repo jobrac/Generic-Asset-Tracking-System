@@ -27,6 +27,6 @@ export interface Delete{
     id              :   number,
 }
 
-export interface Asset{
+export interface AssetList{
     id              :   number
 }

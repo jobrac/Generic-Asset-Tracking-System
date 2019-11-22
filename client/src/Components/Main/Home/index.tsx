@@ -1,28 +1,31 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
-import {Control} from 'Redux/Actions'
-import { Grid, Paper, Table, TableHead, TableRow, TableCell, TableBody, Typography, Button} from '@material-ui/core';
+import {Control,Breadcrumbs} from 'Redux/Actions'
+import { Paper, Button} from '@material-ui/core';
 import './HomeStyle.scss';
-import { Laptop, Mouse, Assignment, BatteryFull, ArrowForward } from '@material-ui/icons';
-import {Chart} from 'react-google-charts';
+import { Laptop, ArrowForward } from '@material-ui/icons';
+import {useSelector, useDispatch} from 'react-redux';
+import Activity from './Activity';
+import AssetStatus from './AssetStatus';
+import AssetCategory from './AssetCategory';
 
-const Home = (props:any) =>{
+
+
+const Home = () =>{
 
     const dispatch = useDispatch();
-    const [width,setWidth] = React.useState(window.innerWidth);
     
+    const assets = useSelector((state:any)=>state.Data.hardware);
+    const accessories = useSelector((state:any)=>state.Data.accessories);
+    const licenses = useSelector((state:any)=>state.Data.licenses);
+    const consumables = useSelector((state:any)=>state.Data.consumables);
+
+
+
     React.useEffect(()=>{
         dispatch(Control("Dashboard"));
-
-        window.addEventListener('resize', updateBrowserWidth);
-        return () => {
-			window.removeEventListener('resize', updateBrowserWidth);
-        }
+        dispatch(Breadcrumbs([{name:'Home',url:'/'}]));
     },[])
 
-    const updateBrowserWidth = () =>{
-        setWidth( window.innerWidth );
-	}
 
     return(
         <div className="home">
@@ -33,7 +36,7 @@ const Home = (props:any) =>{
                             <Laptop />
                         </Paper>
                         <div className="title">Total Assets</div>
-                        <div className="total">250</div>
+                        <div className="total">{assets.data.total ? assets.data.total : 0 }</div>
                         <Button variant="contained" size="small" className="more">see more <ArrowForward/></Button>
                     </Paper>
                 </div>
@@ -42,8 +45,8 @@ const Home = (props:any) =>{
                         <Paper className="icon">
                             <Laptop />
                         </Paper>
-                        <div className="title">Total Assets</div>
-                        <div className="total">250</div>
+                        <div className="title">Total Licenses</div>
+                        <div className="total">{licenses.data.total ? licenses.data.total : 0 }</div>
                         <Button variant="contained" size="small" className="more">see more <ArrowForward/></Button>
                     </Paper>
                 </div>
@@ -52,8 +55,8 @@ const Home = (props:any) =>{
                         <Paper className="icon">
                             <Laptop />
                         </Paper>
-                        <div className="title">Total Assets</div>
-                        <div className="total">250</div>
+                        <div className="title">Total Accessories</div>
+                        <div className="total">{accessories.data.total ? accessories.data.total : 0 }</div>
                         <Button variant="contained" size="small" className="more">see more <ArrowForward/></Button>
                     </Paper>
                 </div>
@@ -62,326 +65,23 @@ const Home = (props:any) =>{
                         <Paper className="icon">
                             <Laptop />
                         </Paper>
-                        <div className="title">Total Assets</div>
-                        <div className="total">250</div>
+                        <div className="title">Total Consumables</div>
+                        <div className="total">{consumables.data.total ? consumables.data.total : 0 }</div>
                         <Button variant="contained" size="small" className="more">see more <ArrowForward/></Button>
                     </Paper>
                 </div>
             </div>
-
+            
             <div className="status col-sm-12">
-                <Paper className="paper">
-                    <Typography variant="h6" className="title bg-primary">Recent Activity</Typography>
-                    <div className="col table">
-                        <Table size="small">
-                            <TableHead>
-                                <TableRow> 
-                                    <TableCell align="center">Date</TableCell>
-                                    <TableCell align="center">Admin</TableCell>
-                                    <TableCell align="center">Action</TableCell>
-                                    <TableCell align="center">Action</TableCell>
-                                    <TableCell align="center">Item</TableCell>
-                                    <TableCell align="center">Target</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow><TableRow>
-                                    <TableCell align="center">asd</TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                    <TableCell align="center">sdsd></TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </div>
-                        <Button variant="contained" className="sticky-bottom-button" size="small">View All</Button>
-                </Paper>
+                <Activity />
             </div>
 
             <div className="activity col-md-12 row">
                 <div className="col-lg-6 col-md-6 col-sm-12 asset">
-                    <Paper className="paper">
-                    <Typography variant="h6" className="title bg-primary">Assets by Status</Typography>
-                        <Chart
-                            width={'100%'}
-                            height={'366px'}
-                            chartType="PieChart"
-                            // getChartWrapper ={widths=>{
-                            //     widths = width;
-                            //     widths.draw();
-                            // }}
-                            loader={<div>Loading Chart</div>}
-                            data={[
-                                ['Task', 'Hours per Day'],
-                                ['Work', 11],
-                                ['Eat', 2],
-                                ['Commute', 2],
-                                ['Watch TV', 2],
-                                ['Sleep', 7],
-                            ]}
-                            options={{
-                                // title: 'Assets by Status',
-                                // Just add this option
-                                is3D: true,
-                            }}
-                            rootProps={{ 'data-testid': '2' }}
-                        />
-                    </Paper>
+                    <AssetStatus />
                 </div>
                 <div className="col-lg-6 col-md-6 col-sm-12 categories">
-                    <Paper className="paper">
-                        <Typography variant="h6" className="title bg-primary">Asset Categories</Typography>
-                        <div className="col table">
-                            <Table size="small">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell align="left">Name</TableCell>
-                                        <TableCell align="left">Type</TableCell>
-                                        <TableCell align="left">Assets</TableCell>
-                                        <TableCell align="left">Licenses</TableCell>
-                                        <TableCell align="left">Accessories</TableCell>
-                                        <TableCell align="left">Consumables</TableCell>
-                                        <TableCell align="left">Components</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                        <TableCell>sdsd</TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </div>
-                        <Button variant="contained" className="sticky-bottom-button" size="small">View All</Button>
-                    </Paper>
+                    <AssetCategory />
                 </div>
             </div>
 

@@ -1,11 +1,12 @@
 import React from 'react';
-import {BrowserRouter,Route,Switch} from 'react-router-dom'
+import {BrowserRouter,Route,Switch} from 'react-router-dom';
 import * as Component from 'Components';
 import {useSelector,useDispatch} from 'react-redux';
 import {UserAccount,LoggedIn} from 'Redux/Actions';
 import { Token, Requests } from 'Services';
 import jwt_decode from 'jwt-decode';
-import { Container,Link, Breadcrumbs, Typography } from '@material-ui/core';
+import { Link, Breadcrumbs, Typography } from '@material-ui/core';
+import Fetcher from 'Services/Fetcher';
 
 
 const Navigations = (props:any) =>{
@@ -33,7 +34,7 @@ const Navigations = (props:any) =>{
             }else{
                 if(useraccount.status === 200){
 
-                    initRoutePermissions(useraccount.data.permissions);
+                    // initRoutePermissions(useraccount.data.permissions);
                     dispatch(UserAccount(useraccount.data,route));
                     dispatch(LoggedIn(true));
                     setInitialized(true);
@@ -49,17 +50,16 @@ const Navigations = (props:any) =>{
         
     }
 
-    const initRoutePermissions = (permissions:any) => {
-        let routes = route;
-        Object.keys(permissions).forEach( (value:any) =>{
-            if(value !== 'superuser' && value !== 'admin'){
-                if(permissions[value].view === 1){
-                    routes.list.splice(routes.list.findIndex(({name}:any) => name === value),1);
-                }
-            }
-        });
-    }
-
+    // const initRoutePermissions = (permissions:any) => {
+    //     let routes = route;
+    //     Object.keys(permissions).forEach( (value:any) =>{
+    //         if(value !== 'superuser' && value !== 'admin'){
+    //             if(permissions[value].view === 1){
+    //                 routes.list.splice(routes.list.findIndex(({name}:any) => name === value),1);
+    //             }
+    //         }
+    //     });
+    // }
 
     return(
         initialized ? 
@@ -67,17 +67,33 @@ const Navigations = (props:any) =>{
                 <BrowserRouter>
                     {
                         status.loggedIn ? 
-                            <React.Fragment>
+                            <React.Fragment>    
+                                <Fetcher />
                                 <Component.Navigation />
-                                <Breadcrumbs separator="›" aria-label="breadcrumb">
-                                    <Link color="inherit" href="/" >
-                                        Home
-                                    </Link>
-                                    <Link color="inherit" href="/getting-started/installation/" >
-                                        Core
-                                    </Link>
-                                    <Typography color="textPrimary">Breadcrumb</Typography>
-                                </Breadcrumbs>
+                                    <Breadcrumbs separator="›" aria-label="breadcrumb">
+                                        {
+                                            status.breadcrumbs.length !== 0  ?
+                                                
+                                                status.breadcrumbs.length === 1
+                                                
+                                                ?
+                                                    <Typography color="textPrimary">{status.breadcrumbs[0].name}</Typography>
+                                                :
+                                                    <React.Fragment>
+                                                        {
+                                                            status.breadcrumbs.slice(0,-1).map((value:any,key:any)=>(
+                                                                <Link color="inherit" href={value.url} key={key} >
+                                                                    {value.name}
+                                                                </Link>
+                                                            ))
+                                                        }
+                                                        
+                                                        <Typography color="textPrimary">{status.breadcrumbs.slice(-1)[0].name}</Typography>
+                                                    </React.Fragment>
+                                            :  ''
+                                        }
+                                        
+                                    </Breadcrumbs>
                             </React.Fragment>     
                          : ''
                     }
@@ -94,6 +110,7 @@ const Navigations = (props:any) =>{
                                 />
                             ))
                         }
+                         <Route path='/not-found' component={Component.NotFound}/>
                         <Route component={Component.NotFound}/>
                     </Switch>
                 </BrowserRouter>

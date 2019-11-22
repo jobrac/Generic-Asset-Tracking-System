@@ -2,11 +2,11 @@ import {StaticMethods, Format} from './StaticMethods';
 import Token from "../Token";
 import Url from '../ServerUrl';
 import axios from 'axios';
-import {Get,Show,Create,Update, Delete} from 'Types/Requests/Companies';
+import {Get,Create,Update, Delete} from 'Types/Requests/Fieldsets';
 
-class Companies extends StaticMethods{
+class Manufacturers extends StaticMethods{
 
-    static async show(data?:Show){
+    static async show(){
         let format:Format = {
             network_error : false,
             status        : 0,
@@ -17,14 +17,14 @@ class Companies extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.companies,
+            url     :   Url.fields,
             headers :   header,
-            data    :   data,
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
         }).catch( async (error) =>{
-            format = await this.Error(error,this.show,data);
+            const header = 
+            format = await this.Error(error,this.show);
         });
 
         return format;
@@ -41,7 +41,7 @@ class Companies extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.companies+data.id,
+            url     :   Url.fieldsets+data.id,
             headers :   header,
         }).then( response => {
             format.status = response.status;
@@ -64,7 +64,7 @@ class Companies extends StaticMethods{
 
         await axios({
             method  :   "PUT",
-            url     :   Url.companies+data.id,
+            url     :   Url.fieldsets+data.id,
             headers :   header,
             data    :   data
         }).then( response => {
@@ -88,7 +88,7 @@ class Companies extends StaticMethods{
 
         await axios({
             method  :   "PATCH",
-            url     :   Url.companies+data.id,
+            url     :   Url.fieldsets+data.id,
             headers :   header,
             data    :   data
         }).then( response => {
@@ -112,7 +112,7 @@ class Companies extends StaticMethods{
 
         await axios({
             method  :   "POST",
-            url     :   Url.companies,
+            url     :   Url.fieldsets,
             headers :   header,
             data    :   data
         }).then( response => {
@@ -136,7 +136,7 @@ class Companies extends StaticMethods{
 
         await axios({
             method  :   "delete",
-            url     :   Url.companies+data.id,
+            url     :   Url.fieldsets+data.id,
             headers :   header,
         }).then( response => {
             format.status = response.status;
@@ -204,4 +204,4 @@ class Companies extends StaticMethods{
 
 }
 
-export default Companies;
+export default Manufacturers;

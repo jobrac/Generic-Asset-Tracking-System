@@ -2,9 +2,9 @@ import {StaticMethods, Format} from './StaticMethods';
 import Token from "../Token";
 import Url from '../ServerUrl';
 import axios from 'axios';
-import {Get,Show,Create} from 'Types/Requests/Consumables';
+import {Show} from 'Types/Requests/Activity';
 
-class Consumables extends StaticMethods{
+class Activity extends StaticMethods{
 
     static async show(data?:Show){
         let format:Format = {
@@ -17,7 +17,7 @@ class Consumables extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.consumables,
+            url     :   Url.reports+'activity',
             headers :   header,
             data    :   data,
         }).then( response => {
@@ -29,55 +29,6 @@ class Consumables extends StaticMethods{
 
         return format;
     }
-
-    static async get(data:Get){
-        let format:Format = {
-            network_error : false,
-            status        : 0,
-            data          : '',
-        }
-
-        const header = super.header(Token.get());    
-
-        await axios({
-            method  :   "GET",
-            url     :   Url.consumables+data.id,
-            headers :   header,
-        }).then( response => {
-            format.status = response.status;
-            format.data = response.data;
-        }).catch( async (error) =>{
-            format = await this.Error(error,this.get,data);
-        });
-
-        return format;
-    }
-
-    static async add(data:Create){
-        let format:Format = {
-            network_error : false,
-            status        : 0,
-            data          : '',
-        }
-
-        const header = super.header(Token.get());    
-
-        await axios({
-            method  :   "POST",
-            url     :   Url.consumables,
-            headers :   header,
-            data    :   data
-        }).then( response => {
-            format.status = response.status;
-            format.data = response.data;
-        }).catch( async (error) =>{
-            format = await this.Error(error,this.add,data);
-        });
-
-        return format;
-    }
-
-
 
 
 
@@ -131,4 +82,4 @@ class Consumables extends StaticMethods{
 
 }
 
-export default Consumables;
+export default Activity;

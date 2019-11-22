@@ -2,9 +2,9 @@ import {StaticMethods, Format} from './StaticMethods';
 import Token from "../Token";
 import Url from '../ServerUrl';
 import axios from 'axios';
-import {Get,Show,Create} from 'Types/Requests/Consumables';
+import {Show,Create} from 'Types/Requests/Maintenances';
 
-class Consumables extends StaticMethods{
+class Manufacturers extends StaticMethods{
 
     static async show(data?:Show){
         let format:Format = {
@@ -17,7 +17,7 @@ class Consumables extends StaticMethods{
 
         await axios({
             method  :   "GET",
-            url     :   Url.consumables,
+            url     :   Url.maintenances,
             headers :   header,
             data    :   data,
         }).then( response => {
@@ -25,29 +25,6 @@ class Consumables extends StaticMethods{
             format.data = response.data;
         }).catch( async (error) =>{
             format = await this.Error(error,this.show,data);
-        });
-
-        return format;
-    }
-
-    static async get(data:Get){
-        let format:Format = {
-            network_error : false,
-            status        : 0,
-            data          : '',
-        }
-
-        const header = super.header(Token.get());    
-
-        await axios({
-            method  :   "GET",
-            url     :   Url.consumables+data.id,
-            headers :   header,
-        }).then( response => {
-            format.status = response.status;
-            format.data = response.data;
-        }).catch( async (error) =>{
-            format = await this.Error(error,this.get,data);
         });
 
         return format;
@@ -64,7 +41,7 @@ class Consumables extends StaticMethods{
 
         await axios({
             method  :   "POST",
-            url     :   Url.consumables,
+            url     :   Url.maintenances,
             headers :   header,
             data    :   data
         }).then( response => {
@@ -76,6 +53,9 @@ class Consumables extends StaticMethods{
 
         return format;
     }
+
+
+   
 
 
 
@@ -131,4 +111,4 @@ class Consumables extends StaticMethods{
 
 }
 
-export default Consumables;
+export default Manufacturers;

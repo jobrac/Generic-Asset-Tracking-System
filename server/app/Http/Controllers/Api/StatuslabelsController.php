@@ -168,13 +168,17 @@ class StatuslabelsController extends Controller
         $points=[];
         $colors=[];
         foreach ($statuslabels as $statuslabel) {
-            if ($statuslabel->assets_count > 0) {
+            // if ($statuslabel->assets_count > 0) {
 
-                $labels[]=$statuslabel->name. ' ('.number_format($statuslabel->assets_count).')';
-                $points[]=$statuslabel->assets_count;
-                if ($statuslabel->color!='') {
-                    $colors[]=$statuslabel->color;
-                }
+            //     $labels[]=$statuslabel->name. ' ('.number_format($statuslabel->assets_count).')';
+            //     $points[]=$statuslabel->assets_count;
+            //     if ($statuslabel->color!='') {
+            //         $colors[]=$statuslabel->color;
+            //     }
+            // }
+
+            if ($statuslabel->assets_count > 0) {
+                $labels[]=[$statuslabel->name,$statuslabel->assets_count];
             }
         }
 
@@ -183,11 +187,6 @@ class StatuslabelsController extends Controller
 
         $result= [
             "labels" => $labels,
-            "datasets" => [ [
-                "data" => $points,
-                "backgroundColor" => $colors_array,
-                "hoverBackgroundColor" =>  $colors_array
-            ]]
         ];
         return $result;
     }

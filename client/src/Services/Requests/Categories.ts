@@ -6,7 +6,7 @@ import {Get,Show,Create,Update, Delete} from 'Types/Requests/Categories';
 
 class StatusLabels extends StaticMethods{
 
-    static async show(data:Show){
+    static async show(data?:Show){
         let format:Format = {
             network_error : false,
             status        : 0,

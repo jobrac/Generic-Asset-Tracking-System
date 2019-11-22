@@ -1,9 +1,9 @@
 import { LoggedIn, Control, Breadcrumbs } from '../Actions/Types';
 
-const initialState = {
+const initialState:any = {
 	loggedIn 	: false,
 	control 	: '',
-	breadcumbs  : {},
+	breadcrumbs  : [],
 };
 
 export default function(state = initialState, action:any) {
@@ -22,7 +22,7 @@ export default function(state = initialState, action:any) {
 		case Breadcrumbs:
 			return {
 				...state,
-				breadcumbs : action.breadcumbs
+				breadcrumbs : action.payload
 			}
     	default:
       		return state;

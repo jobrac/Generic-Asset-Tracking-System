@@ -2,6 +2,7 @@ import React from 'react';
 import {Collapse, ListItemText, ListItemIcon, ListItem, List } from '@material-ui/core';
 import {ExpandLess, ExpandMore, ArrowRightAlt} from '@material-ui/icons';
 import {useSelector} from 'react-redux';
+import { withRouter } from 'react-router';
 
 
 interface props{
@@ -15,7 +16,7 @@ interface props{
     setSidebarProps(sidebar:any): void;
     toggleSidebar()             : void;
 }
-const SidebarList = (props:props) => {
+const SidebarList = (props:any) => {
 
     //state
     const control = useSelector((state:any)=>state.Stat.control);
@@ -32,7 +33,9 @@ const SidebarList = (props:props) => {
                         }
 
                         if(!text.props){
-                            console.log('This is for the url');
+                            if(props.location.pathname !== text.url){
+                                props.history.push(text.url);
+                            }
                         }else{
                             
                             props.setSidebarProps({
@@ -64,7 +67,11 @@ const SidebarList = (props:props) => {
                                 <List component="div" disablePadding>
                                     {
                                         text.props.map((value:any,key:number)=>(
-                                            <ListItem button key={key} className="nestedSidebar">
+                                            <ListItem button key={key} className="nestedSidebar" onClick={()=>{
+                                                if(props.location.pathname !== value.url){
+                                                    props.history.push(value.url);
+                                                }
+                                            }}>
                                                 <ListItemIcon><ArrowRightAlt /></ListItemIcon>
                                                 <ListItemText >
                                                     {value.name}
@@ -82,4 +89,4 @@ const SidebarList = (props:props) => {
     );
 }
 
-export default SidebarList;
+export default withRouter(SidebarList);

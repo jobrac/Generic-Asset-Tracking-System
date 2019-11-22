@@ -1,20 +1,16 @@
 import React, { useEffect } from 'react';
-import {Token/*, Requests*/} from 'Services';
+import {Token} from 'Services';
 import { Redirect } from 'react-router-dom';
-import { useDispatch } from 'react-redux'; // for connecting redux;
-// import { UserAccount as User } from 'Redux/Actions';
-// import jwt_decode from 'jwt-decode';
 
 const ComponentMiddleware =(props:any) =>{
 
     const [ finish, setFinish ] = React.useState(false);
     const [ token, setToken ] = React.useState(false);
-    const updateUser = useDispatch();
 
 
     useEffect(()=>{
         check();
-    },[updateUser]);
+    },[]);
 
     const check = () =>{
         if(Token.exist()){

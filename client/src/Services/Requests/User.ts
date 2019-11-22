@@ -6,7 +6,7 @@ import {Get,Show,Create,Update, Accessories,Asset,Patch,Delete} from 'Types/Requ
 
 class User extends StaticMethods{
 
-    static async show(user:Show){
+    static async show(user?:Show){
         let format:Format = {
             network_error : false,
             status        : 0,
