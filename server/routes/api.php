@@ -402,7 +402,10 @@ Route::group(['namespace' => 'Api'], function () {
             ]
         ); // Consumables resource
 
-
+        Route::delete('hardware/batchdelete', [
+                'as' => 'api.hardware.batchdelete',
+                'uses' => 'AssetsController@batchDestroy'
+        ]);
         Route::resource('hardware', 'AssetsController',
             [
                 'names' =>
@@ -416,7 +419,10 @@ Route::group(['namespace' => 'Api'], function () {
                 'except' => ['create', 'edit'],
                 'parameters' => ['asset' => 'asset_id']
             ]
-        ); // Hardware resource
+        ); 
+        
+
+        // Hardware resource
 
 
         /*--- Imports API ---*/
@@ -792,6 +798,10 @@ Route::group(['namespace' => 'Api'], function () {
             'reports/activity',
             [ 'as' => 'api.activity.index', 'uses' => 'ReportsController@index' ]
         );
-
     });
+
+    Route::delete('/file/{name}','FileController@destroy');
+    Route::get('/file/{name}','FileController@index');
+    Route::post('/file/{any?}','FileController@upload')->where('any', '.*'); 
+    Route::patch('/file/{any?}','FileController@upload')->where('any', '.*'); 
 });

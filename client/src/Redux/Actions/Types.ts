@@ -26,3 +26,8 @@ export const Manufacturers          =   "Manufacturers";
 export const Fieldsets              =   "Fieldsets";
 export const Maintenances           =   "Maintenances";
 export const Activity               =   "Activity";
+export const Suppliers              =   "Suppliers";
+export const TableDisplay           =   {
+    assets      : "assets",
+    licenses    : "licenses",
+}

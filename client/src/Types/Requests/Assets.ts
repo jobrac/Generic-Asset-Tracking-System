@@ -62,7 +62,7 @@ export interface Show{
     /**
      * Optionally restrict asset results to one of these status types: RTD, Deployed, Undeployable, Deleted, Archived, Requestable
      */
-    status          ?:       "RTD" | "Deployed" | "Undeployable" | "Deleted" | "Archived" | "Requestable",
+    status          ?:       "RTD" | "Deployed" | "Undeployable" | "Deleted" | "Archived" | "Requestable" | "Pending",
 
     /**
      * Optionally restrict asset results to this status label ID

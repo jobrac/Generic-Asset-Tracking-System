@@ -1,9 +1,12 @@
 import React from 'react';
 
 const AuditDue = () => {
+
     return(
-        <div>Hello i'm assets AuditDue</div>
-    )
+        <React.Fragment>
+            AuditDue
+        </React.Fragment>
+    );
 }
 
 export default AuditDue;

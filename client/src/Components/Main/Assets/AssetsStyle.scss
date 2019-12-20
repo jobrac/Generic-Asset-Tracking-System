@@ -1,0 +1,210 @@
+.assets-all{
+    margin-top : 20px;
+    position : relative;
+    padding:20px;
+
+    & .header{
+        & .category{
+            width: 115px;
+        }
+
+        & .right{
+            justify-content: flex-end;
+            margin-top: 10px;
+            & .search-asset{
+                position: relative;
+                & .icon{
+                    position: absolute;
+                    z-index: 1;
+                    color: #000000c2;
+                    top: 7px;
+                    left: 15px;
+                }
+                & .input{
+                    height: 37px;
+                    background: #a6b7c5;
+                    padding: 5px 5px 5px 50px;
+                    color : #121c25;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+            }
+
+            & .buttons{
+                margin-left: 10px;
+            }
+        }
+    }
+    & .table-asset{
+        & .pagination-top{
+            position: sticky;
+            top: 48px;
+            background: white;
+            z-index: 999;
+        }
+        & .content{
+            overflow: auto;
+
+            & table{
+                & thead{
+                    & tr{
+                        & th{
+                            position: sticky;
+                            top: 0;
+                            font-weight: bolder;
+                            text-transform: uppercase;
+                            background: #752f74;
+                            color: #ffffff;
+                            white-space: nowrap;   
+                        }
+                    }
+                }
+                & tbody{
+                    & tr{
+                        & td{
+                            max-width: 200px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+
+                & .asset-checkbox{
+                    padding: 0 0 0 5px;
+                    
+                    & span{
+                        padding: 0;
+                        margin: 0;
+                    }
+                    
+                }
+            }
+        }
+    }
+    & .floater{
+        position: fixed;
+        right: 3%;
+        bottom: 100px;
+        opacity: 0.4;
+
+        &:hover{
+            opacity: 1;
+        }
+
+        & button{
+            margin-left: 10px;
+        }
+    }
+}
+
+.show-asset{
+    margin-top : 20px;
+    position : relative;
+    // padding:20px;
+
+    & button.create{
+        position: absolute;
+        right: 0;
+        top:-45px;
+    }
+
+    & .header-tab{
+        margin-bottom: 20px;
+    }
+
+    & .content{
+        padding:20px;
+
+        & .details{
+            & table{
+                & tbody{
+                    & tr{
+                        & td:first-child{
+                            width: 35%;
+                            color: #787e82;
+                            font-weight: bolder;
+                            text-transform: uppercase;
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.create-asset{
+    & .title{
+        font-size: 20px;
+        color: #75787b;
+        text-transform: uppercase;
+        font-weight: bolder;
+    }
+
+    & .content{
+        padding:20px;
+
+        & .asset-create-async-select{
+            & .asset-create-async-select__control{
+                width: 80%;
+                height: 38px;
+            }
+        }
+
+        & .asset-create-input{
+            width: 80%;
+
+            & .MuiInputBase-root{
+                & input{
+                    height: 1px;
+                }
+            }
+        }
+
+        & .asset-create-number{
+            width: 40%;
+
+            & .MuiInputBase-root input{
+                height: 0;
+            }
+        }
+
+        & .table-title{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-weight: bolder;
+            color: dimgrey;
+        }
+
+        & .asset-create-date{
+            & div{
+                width: 100%;
+                margin: 0 !important;
+
+                & div.MuiInputBase-root                                                                                                                                                                                                                                                                                                                                                                         {
+                    height: 38px;
+                    width: 80%;
+                    padding-right: 48px;
+                    & input{
+                        position: absolute;
+                    }
+
+                    & div.MuiInputAdornment-root button.MuiButtonBase-root{
+                        position: absolute;
+                        right: 0;
+                    }
+                }
+            }
+        }
+
+        & .asset-create-textarea{
+            height: 100% !important;
+            margin: 0px;
+            width: 80%;
+            border-radius: 5px;
+        }
+    }
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           

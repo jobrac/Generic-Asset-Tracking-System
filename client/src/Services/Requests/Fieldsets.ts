@@ -66,7 +66,7 @@ class Manufacturers extends StaticMethods{
             method  :   "PUT",
             url     :   Url.fieldsets+data.id,
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -90,7 +90,7 @@ class Manufacturers extends StaticMethods{
             method  :   "PATCH",
             url     :   Url.fieldsets+data.id,
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -114,7 +114,7 @@ class Manufacturers extends StaticMethods{
             method  :   "POST",
             url     :   Url.fieldsets,
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;

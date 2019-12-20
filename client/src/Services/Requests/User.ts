@@ -19,7 +19,7 @@ class User extends StaticMethods{
             method  :   "GET",
             url     :   Url.user,
             headers :   header,
-            data    :   user,
+            params    :   user,
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -66,7 +66,7 @@ class User extends StaticMethods{
             method  :   "PUT",
             url     :   Url.user+user.id,
             headers :   header,
-            data    :   user
+            params    :   user
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -90,7 +90,7 @@ class User extends StaticMethods{
             method  :   "PATCH",
             url     :   Url.user+user.id,
             headers :   header,
-            data    :   user
+            params    :   user
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -114,7 +114,7 @@ class User extends StaticMethods{
             method  :   "POST",
             url     :   Url.user,
             headers :   header,
-            data    :   user
+            params    :   user
         }).then( response => {
             format.status = response.status;
             format.data = response.data;

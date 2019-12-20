@@ -178,7 +178,7 @@ const initialState = {
 			name : "Assets",
 			icon : Laptop,
 			props: [
-				{name : "List All", 		url  : "/assets"},
+				{name : "List All", 		url  : "/assets/hardware"},
 				{name : "Bulk Checkout", 	url : "/assets/bulk-checkout"},
 				{name : "Requested", 		url : "/assets/requested"},
 				{name : "Deleted", 			url : "/assets/deleted"},

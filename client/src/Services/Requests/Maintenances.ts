@@ -19,7 +19,7 @@ class Manufacturers extends StaticMethods{
             method  :   "GET",
             url     :   Url.maintenances,
             headers :   header,
-            data    :   data,
+            params    :   data,
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -43,7 +43,7 @@ class Manufacturers extends StaticMethods{
             method  :   "POST",
             url     :   Url.maintenances,
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;

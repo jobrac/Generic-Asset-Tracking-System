@@ -12,6 +12,26 @@
     border-top: unset;
 }
 
+//z index
+.z-index-2000{
+    z-index: 2000 !important;
+}
+
+
+//pointer cursor
+.pointer{
+    cursor: pointer !important;
+}
+
+
+.hidden{
+    display: none !important;
+}
+
+.invisible{
+    visibility: hidden;
+}
+
 
 
 //material breadcrumbs
@@ -101,6 +121,25 @@ nav.MuiBreadcrumbs-root{
     }
 }
 
+
+//for menu with checkbox under clickaway component
+//table columns display
+.list-checkbox{
+    width : 250px;
+    max-height: 350px;
+    overflow: auto;
+
+    & li{
+        & .MuiListItem-root{
+            & .MuiListItemText-root{
+                text-overflow: ellipsis;
+                max-width: 150px;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+        }
+    }
+}
 
 //remove outline in button
 button{

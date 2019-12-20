@@ -1,12 +1,22 @@
 import React from 'react';
 import { Paper, Typography, Table, TableHead, TableRow, TableCell, TableBody, Button,} from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
-import {useSelector} from 'react-redux';
-import moment from 'moment'
+import {useSelector,useDispatch} from 'react-redux';
+import moment from 'moment';
+import {
+    activity as AC
+} from 'Redux/Actions';
 
 const Activity = () =>{
+
+    
+    const dispatch = useDispatch();
     const activity = useSelector((state:any)=>state.Data.activity.data);
     const row = 20;   //change this respectively
+
+    React.useEffect(()=>{
+        dispatch(AC(activity.config));
+    },[])
 
 
     const skeleton = () => {
@@ -56,7 +66,7 @@ const Activity = () =>{
                                         <TableCell align="left">{value.admin.name}</TableCell>
                                         <TableCell align="left">{value.action_type.replace('general.','').replace('_',' ')}</TableCell>
                                         <TableCell align="left"><div dangerouslySetInnerHTML={{ __html: value.item.name}} /></TableCell>
-                                        <TableCell align="left"><div dangerouslySetInnerHTML={{ __html:value.target.name}} /></TableCell>
+                                        <TableCell align="left"><div dangerouslySetInnerHTML={{ __html:value.target === null ? '' : value.target.name}} /></TableCell>
                                     </TableRow>
                                 ))
                             : 

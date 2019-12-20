@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter,Route,Switch} from 'react-router-dom';
+import {BrowserRouter,Route,Switch, withRouter} from 'react-router-dom';
 import * as Component from 'Components';
 import {useSelector,useDispatch} from 'react-redux';
 import {UserAccount,LoggedIn} from 'Redux/Actions';
@@ -50,16 +50,6 @@ const Navigations = (props:any) =>{
         
     }
 
-    // const initRoutePermissions = (permissions:any) => {
-    //     let routes = route;
-    //     Object.keys(permissions).forEach( (value:any) =>{
-    //         if(value !== 'superuser' && value !== 'admin'){
-    //             if(permissions[value].view === 1){
-    //                 routes.list.splice(routes.list.findIndex(({name}:any) => name === value),1);
-    //             }
-    //         }
-    //     });
-    // }
 
     return(
         initialized ? 
@@ -68,32 +58,28 @@ const Navigations = (props:any) =>{
                     {
                         status.loggedIn ? 
                             <React.Fragment>    
-                                <Fetcher />
+                                {/* <Fetcher /> */}
                                 <Component.Navigation />
-                                    <Breadcrumbs separator="›" aria-label="breadcrumb">
-                                        {
-                                            status.breadcrumbs.length !== 0  ?
-                                                
-                                                status.breadcrumbs.length === 1
-                                                
-                                                ?
+                                    {
+                                        status.breadcrumbs.length !== 0  ?
+                                            status.breadcrumbs.length === 1 ?
+                                                <Breadcrumbs separator="›" aria-label="breadcrumb">
                                                     <Typography color="textPrimary">{status.breadcrumbs[0].name}</Typography>
-                                                :
-                                                    <React.Fragment>
-                                                        {
-                                                            status.breadcrumbs.slice(0,-1).map((value:any,key:any)=>(
-                                                                <Link color="inherit" href={value.url} key={key} >
-                                                                    {value.name}
-                                                                </Link>
-                                                            ))
-                                                        }
-                                                        
-                                                        <Typography color="textPrimary">{status.breadcrumbs.slice(-1)[0].name}</Typography>
-                                                    </React.Fragment>
-                                            :  ''
-                                        }
-                                        
-                                    </Breadcrumbs>
+                                                </Breadcrumbs>
+                                            :
+                                                <Breadcrumbs separator="›" aria-label="breadcrumb">
+                                                    {
+                                                        status.breadcrumbs.slice(0,-1).map((value:any,key:any)=>(
+                                                            <Link color="inherit" href={value.url} key={key}>
+                                                                {value.name}
+                                                            </Link>
+                                                        ))
+                                                    }
+                                                    
+                                                    <Typography color="textPrimary">{status.breadcrumbs.slice(-1)[0].name}</Typography>
+                                                </Breadcrumbs>
+                                        :  ''
+                                    }
                             </React.Fragment>     
                          : ''
                     }

@@ -17,7 +17,8 @@ const prefix={
     fields          :   'fields/',
     fieldsets       :   'fieldsets/',
     maintenances    :   'maintenances/',
-    reports        :   'reports/',
+    reports         :   'reports/',
+    suppliers       :   'suppliers/'
 }
 
 const Url = {
@@ -42,7 +43,9 @@ const Url = {
     fields      :   server_url+prefix.fields,
     fieldsets   :   server_url+prefix.fieldsets,
     maintenances:   server_url+prefix.maintenances,
-    reports    :   server_url+prefix.reports
+    reports     :   server_url+prefix.reports,
+    suppliers   :   server_url+prefix.suppliers,
+    upload      :   server_url+'upload/'
 }
 
 export default Url;

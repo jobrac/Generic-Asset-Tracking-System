@@ -6,3 +6,4 @@ export {
     components,users,statusLabels,models,licenses,categories,
     manufacturers,fieldsets,maintenances,activity
 } from './Data';
+export {setTableDisplay} from './SetTableDisplay';

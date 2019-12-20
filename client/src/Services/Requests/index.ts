@@ -18,3 +18,5 @@ export {default as Manufacturers} from './Manufacturers';
 export {default as Models} from './Models';
 export {default as StatusLabels} from './StatusLabels';
 export {default as Activity} from './Activity';
+export {default as Suppliers} from './Suppliers';
+

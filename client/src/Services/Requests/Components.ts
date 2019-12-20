@@ -19,7 +19,7 @@ class Components extends StaticMethods{
             method  :   "GET",
             url     :   Url.components,
             headers :   header,
-            data    :   data,
+            params    :   data,
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -66,7 +66,7 @@ class Components extends StaticMethods{
             method  :   "POST",
             url     :   Url.components,
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;

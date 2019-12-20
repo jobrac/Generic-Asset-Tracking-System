@@ -19,7 +19,7 @@ class Accessories extends StaticMethods{
             method  :   "GET",
             url     :   Url.accessories,
             headers :   header,
-            data    :   data,
+            params    :   data,
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -66,7 +66,7 @@ class Accessories extends StaticMethods{
             method  :   "POST",
             url     :   Url.accessories,
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;

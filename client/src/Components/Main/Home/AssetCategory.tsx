@@ -1,16 +1,25 @@
 import React from 'react';
 import { Paper, Typography, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@material-ui/core';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 import Skeleton from '@material-ui/lab/Skeleton/Skeleton';
 import { Laptop, Assignment, Mouse, Keyboard, BatteryFull } from '@material-ui/icons';
+import {
+    categories as CA
+} from 'Redux/Actions';
+
 const AssetCategory=() => {
 
     const categories = useSelector((state:any)=>state.Data.categories.data);
     const row = 20;
+    const dispatch = useDispatch();
     
 
+    React.useEffect(()=>{
+        dispatch(CA(categories.config));
+    },[]);
+
     const skeleton = () => {
-        const column = 5; 
+        const column = 7; 
         let result:any = [];
         let columnArr = [];
 

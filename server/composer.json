@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.1.3",
+        "ankitpokhrel/tus-php": "^1.1",
         "barryvdh/laravel-cors": "^0.11.3",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
@@ -17,6 +18,7 @@
         "laravel/tinker": "^1.0",
         "nesbot/carbon": "^2.21",
         "patchwork/utf8": "^1.3",
+        "pion/laravel-chunk-upload": "^1.3",
         "tymon/jwt-auth": "^1.0.0-rc.4.1",
         "watson/validating": "^3.2"
     },

@@ -19,7 +19,7 @@ class StatusLabels extends StaticMethods{
             method  :   "GET",
             url     :   Url.statuslabels,
             headers :   header,
-            data    :   data,
+            params    :   data,
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -66,7 +66,7 @@ class StatusLabels extends StaticMethods{
             method  :   "PUT",
             url     :   Url.statuslabels+data.id,
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -90,7 +90,7 @@ class StatusLabels extends StaticMethods{
             method  :   "PATCH",
             url     :   Url.statuslabels+data.id,
             headers :   header,
-            data    :   data
+            params  :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -114,7 +114,7 @@ class StatusLabels extends StaticMethods{
             method  :   "POST",
             url     :   Url.statuslabels,
             headers :   header,
-            data    :   data
+            params  :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;

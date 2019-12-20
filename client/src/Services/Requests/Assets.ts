@@ -19,7 +19,7 @@ class Assets extends StaticMethods{
             method  :   "GET",
             url     :   Url.hardware,
             headers :   header,
-            data    :   data,
+            params  :   data,
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -66,7 +66,7 @@ class Assets extends StaticMethods{
             method  :   "PUT",
             url     :   Url.hardware+data.id,
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -90,7 +90,7 @@ class Assets extends StaticMethods{
             method  :   "PATCH",
             url     :   Url.hardware+data.id,
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -114,7 +114,7 @@ class Assets extends StaticMethods{
             method  :   "POST",
             url     :   Url.hardware,
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -171,7 +171,7 @@ class Assets extends StaticMethods{
         return format;
     }
 
-    static async delete(data:Delete){
+    static async delete(data:[]){
         let format:Format = {
             network_error : false,
             status        : 0,
@@ -182,8 +182,11 @@ class Assets extends StaticMethods{
 
         await axios({
             method  :   "delete",
-            url     :   Url.hardware+data.id,
+            url     :   Url.hardware+'batchdelete',
             headers :   header,
+            params  :   {
+                id : data
+            }
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -207,7 +210,7 @@ class Assets extends StaticMethods{
             method  :   "POST",
             url     :   Url.hardware+data.id+'/checkout',
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;
@@ -254,7 +257,7 @@ class Assets extends StaticMethods{
             method  :   "POST",
             url     :   Url.hardware+'audit',
             headers :   header,
-            data    :   data
+            params    :   data
         }).then( response => {
             format.status = response.status;
             format.data = response.data;

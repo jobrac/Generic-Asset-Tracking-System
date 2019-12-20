@@ -1,0 +1,6 @@
+#!/bin/bash
+killall php
+killall node
+killall npm
+php server/artisan serve > /dev/null 2>&1 &
+npm start --prefix client

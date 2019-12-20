@@ -200,6 +200,7 @@ return [
         */
         App\Providers\MacroServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        App\Providers\TusServiceProvider::class,
 
     ],
 

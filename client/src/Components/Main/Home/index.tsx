@@ -8,6 +8,13 @@ import Activity from './Activity';
 import AssetStatus from './AssetStatus';
 import AssetCategory from './AssetCategory';
 
+import {
+    hardware,
+    accessories as AC,
+    consumables as CO,
+    licenses as LI
+} from 'Redux/Actions';
+
 
 
 const Home = () =>{
@@ -24,6 +31,12 @@ const Home = () =>{
     React.useEffect(()=>{
         dispatch(Control("Dashboard"));
         dispatch(Breadcrumbs([{name:'Home',url:'/'}]));
+
+
+        dispatch(hardware(assets.config));
+        dispatch(LI(licenses.config));
+        dispatch(AC(accessories.config));
+        dispatch(CO(consumables.config));
     },[])
 
 

@@ -543,22 +543,38 @@ class AssetsController extends Controller
      */
     public function destroy($id)
     {
-        //////$this->authorize('delete', Asset::class);
-
         if ($asset = Asset::find($id)) {
-
-            //////$this->authorize('delete', $asset);
-
             DB::table('assets')
                 ->where('id', $asset->id)
                 ->update(array('assigned_to' => null));
-
             $asset->delete();
-
             return response()->json(Helper::formatStandardApiResponse('success', null, trans('admin/hardware/message.delete.success')));
         }
-
         return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/hardware/message.does_not_exist')), 200);
+    }
+
+
+    public function batchDestroy(Request $request)
+    {   
+        
+        $asset = $request->id;
+
+        if(sizeof($asset) == 0 || $asset == null ){
+            return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/hardware/message.does_not_exist')), 200);
+        }
+
+        foreach ($asset as $ass) {
+            $number = (int)$ass;
+            if ($assets = Asset::find($number)) {
+                DB::table('assets')
+                    ->where('id', $assets->id)
+                    ->update(array('assigned_to' => null));
+
+                $assets->delete();
+            }
+        }
+
+        return response()->json(Helper::formatStandardApiResponse('success', null, trans('admin/hardware/message.delete.success')));    
     }
 
 

@@ -76,7 +76,6 @@ class SuppliersController extends Controller
      */
     public function show($id)
     {
-        ////$this->authorize('view', Supplier::class);
         $supplier = Supplier::findOrFail($id);
         return (new SuppliersTransformer)->transformSupplier($supplier);
     }

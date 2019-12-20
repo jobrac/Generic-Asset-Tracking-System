@@ -1,68 +1,104 @@
 import {
     Hardware, Companies,Locations,Accessories,Consumables,
     Components,Users,StatusLabels,Models,Licenses,Categories,
-    Manufacturers,Fieldsets,Maintenances, Activity
+    Manufacturers,Fieldsets,Maintenances, Activity,Suppliers
 } from '../Actions/Types';
 
 const initialState = {
-    hardware        :   {
-        config      :   {},
+    hardware        :   {        
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     companies       :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     locations       :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     accessories     :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     consumables     :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     components      :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     users           :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     statusLabels    :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     models          :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     licenses        :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     categories      :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     manufacturers   :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     fieldsets       :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     maintenances    :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
         data        :   {},
     },
     activity        :   {
-        config      :   {},
+        config      :   {
+            limit   : 10,
+        },
+        data        :   {},
+    },
+    suppliers        :   {
+        config       :   {
+            limit    : 10,
+        },
         data        :   {},
     }
 };
@@ -185,6 +221,14 @@ export default function(state = initialState, action:any) {
             return{
                 ...state,
                 activity : {
+                    config : action.payload.config,
+                    data   : action.payload.data,
+                }
+            }
+        case Suppliers:
+            return{
+                ...state,
+                suppliers : {
                     config : action.payload.config,
                     data   : action.payload.data,
                 }
