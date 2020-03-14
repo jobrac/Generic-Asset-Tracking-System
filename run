@@ -1,6 +1,5 @@
 #!/bin/bash
-killall php
-killall node
-killall npm
+sudo kill -9 $(sudo lsof -ti:8000)
+sudo kill -9 $(sudo lsof -ti:3001)
 php server/artisan serve > /dev/null 2>&1 &
 npm start --prefix client

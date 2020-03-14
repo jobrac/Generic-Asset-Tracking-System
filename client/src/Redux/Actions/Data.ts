@@ -1,34 +1,48 @@
 import {
     Hardware, Companies,Locations,Accessories,Consumables,
     Components,Users,StatusLabels,Models,Licenses,Categories,
-    Manufacturers,Fieldsets,Maintenances,Activity,Suppliers
+    Manufacturers,Fieldsets,Maintenances,Activity,Suppliers,
+    LoggedIn
 } from './Types';
 import { Requests } from 'Services';
+import {request} from 'Services/Requests/StaticMethods';
+import Url from 'Services/ServerUrl';
 
-// interface Data{
-//     config  :   any,
-//     data    :   any
-// }
+interface Data{
+    config  ?:   {},
+    data    ?:   {}
+}
 
-export const hardware = (config:any) => {
+export const hardware = (config:Data) => {
     return async (dispatch:any) => {
-
         dispatch({
             type    : Hardware,
             payload : {
-                config : config,
+                config : config.config,
                 data   : {},
-            }
+            }   
         })
-
-        const a = await Requests.Assets.show(config);
+        const a = await request({
+            url : Url.hardware,
+            data : config.config,
+            method : 'GET',
+            params : true,
+        });
+        
         if(a.status === 200){
             dispatch({
                 type    : Hardware,
                 payload : {
-                    config : config,
+                    config : config.config,
                     data   : a.data,
                 }
+            });
+        }
+        else
+        if(!a.network_error){
+            dispatch({
+                type    : LoggedIn,
+                payload : false
             });
         }
     }
@@ -162,7 +176,13 @@ export const users = (config:any) => {
             }
         });
 
-        const a = await Requests.User.show(config);
+        const a = await request({
+            url : Url.user,
+            data : config,
+            method : 'GET',
+            params : true,
+        });
+
         if(a.status === 200){
             dispatch({
                 type    : Users,

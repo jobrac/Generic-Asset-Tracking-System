@@ -380,9 +380,11 @@ class Asset extends Depreciable
     public function getImageUrl()
     {
         if ($this->image && !empty($this->image)) {
-            return url('/').'/uploads/assets/'.$this->image;
+            // return url('/').'/uploads/assets/'.$this->image;    --- original
+            return '/api/file/'.$this->image;  
         } elseif ($this->model && !empty($this->model->image)) {
-            return url('/').'/uploads/models/'.$this->model->image;
+            // return url('/').'/uploads/models/'.$this->model->image;  --- original
+            return '/api/file/'.$this->model->image;
         }
         return false;
     }

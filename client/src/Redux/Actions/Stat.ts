@@ -1,7 +1,8 @@
 import { 
     LoggedIn as li,
     Control as ctrl,
-    Breadcrumbs as bc
+    Breadcrumbs as bc,
+    Error as er,
 } from './Types';
 
 // interface Status {
@@ -33,4 +34,14 @@ export const Breadcrumbs = (breadcrumbs:any) => {
             payload :   breadcrumbs
         });
     }
-} 
+}
+
+type error = "" | "relogin" | "server_error";
+export const Error = (error:error) => {
+    return async (dispatch:any) => {
+        dispatch({
+            type     : er,
+            payload : error,
+        })
+    }
+}

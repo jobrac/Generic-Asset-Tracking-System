@@ -23,7 +23,6 @@ const LoginMiddleware=(props:any) => {
         return null;
     }
 
-    
     if(token){
         return <Redirect to={{ pathname : '/'}} />;
     }

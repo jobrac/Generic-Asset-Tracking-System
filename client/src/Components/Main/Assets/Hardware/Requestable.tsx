@@ -7,6 +7,10 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 import { withRouter } from 'react-router';
 
+// @ts-ignore
+import ModalImage from "react-modal-image";
+
+
 const Requestable = (props:any) => {
 
     const tableDisplay = useSelector((state:any)=>state.TableDisplay.assets);
@@ -25,6 +29,7 @@ const Requestable = (props:any) => {
         let a = props.state.config;
         a.status = "Requestable";
         props.state.setConfig(a);
+        setPage(0);
 
         dispatch(hardware(a));
         props.state.setCheck(
@@ -50,7 +55,7 @@ const Requestable = (props:any) => {
                 offset: 0,
             });
         }
-    },[]);
+    },[props.state.config.search,props.state.config.filter]);
 
 
     const sortAction = (name:any) => {
@@ -200,7 +205,7 @@ const Requestable = (props:any) => {
                                 typeof asset.data.total === 'number' ? 
                                     asset.data.rows.map((values:any,keys:any)=>
                                         <TableRow key={keys} hover className="pointer" onDoubleClick={()=>props.history.push('/assets/id/'+values.id)}>
-                                            <TableCell className="asset-checkbox">
+                                            <TableCell className="asset-checkbox" >
                                                 <Checkbox
                                                     size="small"
                                                     checked={props.state.check[keys+1].checked}
@@ -213,9 +218,9 @@ const Requestable = (props:any) => {
                                             </TableCell>
                                            <TableCell style={setDisplay('id')}>{values.id}</TableCell>
                                            <TableCell style={setDisplay('name')}>{values.name}</TableCell>
-                                           <TableCell style={setDisplay('company')}>{values.company}</TableCell>
+                                           <TableCell style={setDisplay('company')}>{values.company ? values.company.name : ''}</TableCell>
                                            <TableCell style={setDisplay('status_label')}>{values.status_label.name}</TableCell>
-                                           <TableCell style={setDisplay('location')}>{values.location.name}</TableCell>
+                                           <TableCell style={setDisplay('location')}>{values.location ? values.location.name : ''}</TableCell>
                                            <TableCell style={setDisplay('checkin_counter')}>{values.checkin_counter}</TableCell>
                                            <TableCell style={setDisplay('checkout_counter')}>{values.checkout_counter}</TableCell>
                                            <TableCell style={setDisplay('asset_tag')}>{values.asset_tag}</TableCell>
@@ -225,19 +230,26 @@ const Requestable = (props:any) => {
                                            <TableCell style={setDisplay('eol')}>{values.eol.date}</TableCell>
                                            <TableCell style={setDisplay('category')}>{values.category.name}</TableCell>
                                            <TableCell style={setDisplay('manufacturer')}>{values.manufacturer.name}</TableCell>
-                                           <TableCell style={setDisplay('supplier')}>{values.supplier.name}</TableCell>
+                                           <TableCell style={setDisplay('supplier')}>{values.supplier ? values.supplier.name : ''}</TableCell>
                                            <TableCell style={setDisplay('notes')}>{values.notes}</TableCell>
                                            <TableCell style={setDisplay('order_number')}>{values.order_number}</TableCell>
-                                           <TableCell style={setDisplay('rtd_location')}>{values.rtd_location.name}</TableCell>
-                                           <TableCell style={setDisplay('image')}>{values.image}</TableCell>
+                                           <TableCell style={setDisplay('rtd_location')}>{values.rtd_location ? values.rtd_location.name : ''}</TableCell>
+                                           <TableCell style={setDisplay('image')}>
+                                                <ModalImage
+                                                    small={values.image}
+                                                    large={values.image}
+                                                    alt={values.name}
+                                                    className="image-popup-table"
+                                                />
+                                            </TableCell>
                                            <TableCell style={setDisplay('assigned_to')}>{values.assigned_to ? values.assigned_to.name : ''}</TableCell>
                                            <TableCell style={setDisplay('warranty_months')}>{values.warranty_months}</TableCell>
-                                           <TableCell style={setDisplay('warranty_expires')}>{values.warranty_expires}</TableCell>
+                                           <TableCell style={setDisplay('warranty_expires')}>{values.warranty_expires ? values.warranty_expires.date : ''}</TableCell>
                                            <TableCell style={setDisplay('created_at')}>{values.created_at.datetime}</TableCell>
                                            <TableCell style={setDisplay('updated_at')}>{values.updated_at.datetime}</TableCell>
                                            <TableCell style={setDisplay('last_audit_date')}>{values.last_audit_date}</TableCell>
                                            <TableCell style={setDisplay('next_audit_date')}>{values.next_audit_date}</TableCell>
-                                           <TableCell style={setDisplay('deleted_at')}>{values.deleted_at}</TableCell>
+                                           <TableCell style={setDisplay('deleted_at')}>{values.deleted_at === null ? '' :  values.deleted_at.datetime }</TableCell>
                                            <TableCell style={setDisplay('purchase_date')}>{values.purchase_date.date}</TableCell>
                                            <TableCell style={setDisplay('last_checkout')}>{values.last_checkout}</TableCell>
                                            <TableCell style={setDisplay('expected_checkin')}>{values.expected_checkin}</TableCell>

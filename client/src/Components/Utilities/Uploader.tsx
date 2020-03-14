@@ -157,6 +157,7 @@ const Uploader = (props:Uploader) => {
             type : "",
             message : "",
         })
+        props.state.setUrl('');
         await axios({
             url:'/api/file/'+newFileName,
             method : "delete",

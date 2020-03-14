@@ -1,7 +1,8 @@
 import {
     Hardware, Companies,Locations,Accessories,Consumables,
     Components,Users,StatusLabels,Models,Licenses,Categories,
-    Manufacturers,Fieldsets,Maintenances, Activity,Suppliers
+    Manufacturers,Fieldsets,Maintenances, Activity,Suppliers,
+    LoggedIn
 } from '../Actions/Types';
 
 const initialState = {
@@ -104,6 +105,8 @@ const initialState = {
 };
 
 export default function(state = initialState, action:any) {
+
+    // console.log({});
 	switch (action.type) {
         case Hardware:
             return{

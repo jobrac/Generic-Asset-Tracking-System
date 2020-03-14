@@ -16,7 +16,7 @@ class FileController extends Controller
     }
 
     public function  index($name){
-
+        
         $file =storage_path()."/app/files/".$name;
 
         if(!File::exists($file)){

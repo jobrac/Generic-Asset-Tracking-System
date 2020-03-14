@@ -6,6 +6,9 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 import { withRouter } from 'react-router-dom';
 
+// @ts-ignore
+import ModalImage from "react-modal-image";
+
 const All = (props:any) => {
 
     const tableDisplay = useSelector((state:any)=>state.TableDisplay.assets);
@@ -19,13 +22,15 @@ const All = (props:any) => {
         order:"desc"
     });
 
-
-
-    
-
     React.useEffect(()=>{
 
-        dispatch(hardware(props.state.config));
+        let a = props.state.config;
+        a.status = "";
+        props.state.setConfig(a);
+
+
+        dispatch(hardware({config:a}));
+        setPage(0);
         props.state.setCheck(
             [
                 {id:0,checked:false,value:{}},
@@ -42,7 +47,7 @@ const All = (props:any) => {
             ]
         )
         props.state.setShowAction(false);
-    },[props.state.config.search])
+    },[props.state.config.search,props.state.config.filter])
     
     const sortAction = (name:any) => {
         if(sort.name === ""){
@@ -122,7 +127,7 @@ const All = (props:any) => {
             tempConfig.limit = parseInt(event.target.value, 10);
             props.state.setConfig(tempConfig);
             setPage(0);
-            dispatch(hardware(tempConfig));
+            dispatch(hardware({config:tempConfig}));
 
             let holder = [];
             for(var i=0;i<tempConfig.limit+1;i++){
@@ -137,7 +142,7 @@ const All = (props:any) => {
         setPage(newPage);
         let tempConfig = props.state.config;
         tempConfig.offset = newPage*tempConfig.limit;
-        dispatch(hardware(tempConfig));
+        dispatch(hardware({config:tempConfig}));
         props.state.setConfig(tempConfig);
         
     };
@@ -192,6 +197,7 @@ const All = (props:any) => {
                                     asset.data.rows.map((values:any,keys:any)=>(
                                         <TableRow key={keys} hover className="pointer" onDoubleClick={()=>props.history.push('/assets/id/'+values.id)}>
                                             <TableCell className="asset-checkbox" >
+                                                {/* {console.log(keys)} */}
                                                 <Checkbox
                                                     size="small"
                                                     checked={props.state.check[keys+1].checked}
@@ -204,9 +210,9 @@ const All = (props:any) => {
                                             </TableCell>
                                            <TableCell style={setDisplay('id')}>{values.id}</TableCell>
                                            <TableCell style={setDisplay('name')}>{values.name}</TableCell>
-                                           <TableCell style={setDisplay('company')}>{values.company}</TableCell>
+                                           <TableCell style={setDisplay('company')}>{values.company ? values.company.name : ''}</TableCell>
                                            <TableCell style={setDisplay('status_label')}>{values.status_label.name}</TableCell>
-                                           <TableCell style={setDisplay('location')}>{values.location.name}</TableCell>
+                                           <TableCell style={setDisplay('location')}>{values.location ? values.location.name : ''}</TableCell>
                                            <TableCell style={setDisplay('checkin_counter')}>{values.checkin_counter}</TableCell>
                                            <TableCell style={setDisplay('checkout_counter')}>{values.checkout_counter}</TableCell>
                                            <TableCell style={setDisplay('asset_tag')}>{values.asset_tag}</TableCell>
@@ -216,14 +222,21 @@ const All = (props:any) => {
                                            <TableCell style={setDisplay('eol')}>{values.eol.date}</TableCell>
                                            <TableCell style={setDisplay('category')}>{values.category.name}</TableCell>
                                            <TableCell style={setDisplay('manufacturer')}>{values.manufacturer.name}</TableCell>
-                                           <TableCell style={setDisplay('supplier')}>{values.supplier.name}</TableCell>
+                                           <TableCell style={setDisplay('supplier')}>{values.supplier ? values.supplier.name : ''}</TableCell>
                                            <TableCell style={setDisplay('notes')}>{values.notes}</TableCell>
                                            <TableCell style={setDisplay('order_number')}>{values.order_number}</TableCell>
-                                           <TableCell style={setDisplay('rtd_location')}>{values.rtd_location.name}</TableCell>
-                                           <TableCell style={setDisplay('image')}>{values.image}</TableCell>
+                                           <TableCell style={setDisplay('rtd_location')}>{values.rtd_location ? values.rtd_location.name : ''}</TableCell>
+                                           <TableCell style={setDisplay('image')}>
+                                                <ModalImage
+                                                    small={values.image}
+                                                    large={values.image}
+                                                    alt={values.name}
+                                                    className="image-popup-table"
+                                                />
+                                            </TableCell>
                                            <TableCell style={setDisplay('assigned_to')}>{values.assigned_to ? values.assigned_to.name : ''}</TableCell>
                                            <TableCell style={setDisplay('warranty_months')}>{values.warranty_months}</TableCell>
-                                           <TableCell style={setDisplay('warranty_expires')}>{values.warranty_expires}</TableCell>
+                                           <TableCell style={setDisplay('warranty_expires')}>{values.warranty_expires ? values.warranty_expires.date : ''}</TableCell>
                                            <TableCell style={setDisplay('created_at')}>{values.created_at.datetime}</TableCell>
                                            <TableCell style={setDisplay('updated_at')}>{values.updated_at.datetime}</TableCell>
                                            <TableCell style={setDisplay('last_audit_date')}>{values.last_audit_date}</TableCell>

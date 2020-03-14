@@ -88,7 +88,7 @@ export const setTableDisplay = (control:Table) => {
 
     return (dispatch:any) => {
 
-        console.log(control);
+        // console.log(control);
         dispatch({
             type    : TD[control.type],
             payload : control

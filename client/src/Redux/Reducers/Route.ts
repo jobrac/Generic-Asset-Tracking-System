@@ -1,4 +1,4 @@
-import { Route, Nav} from '../Actions/Types';
+import { Route, Nav,LoggedIn} from '../Actions/Types';
 import {LoginMiddleware,ComponentMiddleware} from 'Middleware';
 import {
 	Home,

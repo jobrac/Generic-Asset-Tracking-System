@@ -33,7 +33,7 @@ const Home = () =>{
         dispatch(Breadcrumbs([{name:'Home',url:'/'}]));
 
 
-        dispatch(hardware(assets.config));
+        dispatch(hardware({config:assets.config}));
         dispatch(LI(licenses.config));
         dispatch(AC(accessories.config));
         dispatch(CO(consumables.config));

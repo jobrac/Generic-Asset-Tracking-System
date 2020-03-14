@@ -1,3 +1,7 @@
+/**
+ * sdsds
+ */
+
 import React from 'react';
 import { Paper, TextField, FormControl, InputLabel, OutlinedInput, InputAdornment, FormControlLabel, Checkbox, Button, FormHelperText, Typography } from '@material-ui/core';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
@@ -16,15 +20,18 @@ import Url from 'Services/ServerUrl';
 import Uploader from 'Components/Utilities/Uploader';
 import { useSnackbar } from 'notistack';
 import { Close } from '@material-ui/icons';
+import { valueContainerCSS } from 'react-select/src/components/containers';
+// import {Update} from 'Types/Requests/Assets';
 
 
 
 type inputAsync = "company" | "model" | "status" | "supplier" | "locations";
 
 
-const Create = (props:any) =>{
+const Edit = (props:any) =>{
 
-    const assets:any = React.createRef();
+    const id = parseInt(props.match.params.id,10);
+    const assets:any = React.useRef();
 
     const  initialError = {
         company_id      : {status      : false,message     : ''},
@@ -45,6 +52,7 @@ const Create = (props:any) =>{
     };
 
     const initialInput:any = {
+        id              : id,
         company_id      : null,
         asset_tag       : '',
         model_id        : null,
@@ -61,19 +69,87 @@ const Create = (props:any) =>{
         requestable     : 0,
         image           : '',
     }
-
-
     const dispatch = useDispatch();
     const [input,setInput] = React.useState(initialInput);
     const [error,setError] = React.useState(initialError);
     const [submit, setSubmit] = React.useState(false);
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const [data,setData] = React.useState();
+    
+    const [asyncValue,setAsyncValue] = React.useState({
+        company_id         :   {},
+        model_id           :   {},
+        status_id          :   {},
+        supplier_id        :   {},
+        rtd_location_id    :   {},
+    });
+
+
+    React.useEffect(()=>{
+        checkId();
+    },[]);
+
+
+    const checkId = async() => {
+        // const {data} = await Requests.Assets.get({id});
+        const {data} = await assets.current.get({id});
+
+        // console.log(data);
+
+        if(data.status || data.status === 'error' ){
+            props.history.push('/not-found');
+        }
+
+        //fill the data
+        if(data){
+            setAsyncValue({
+                ...asyncValue,
+                company_id      : data.company      ? {value : data.company.id,label:data.company.name} : null,
+                model_id        : data.model        ? {value : data.model.id,label:data.model.name} : null,
+                status_id       : data.status_label ? {value : data.status_label.id,label:data.status_label.name} : null,
+                supplier_id     : data.supplier     ? {value : data.supplier.id,label:data.supplier.name} : null,
+                rtd_location_id : data.rtd_location ? {value : data.rtd_location.id,label:data.rtd_location.name} : null,
+            })
+
+            setInput({
+                ...input,
+                company_id     : data.company ? data.company.id : null,
+                asset_tag      : data.asset_tag,
+                model_id       : data.model ? data.model.id : null,
+                status_id      : data.status_label ? data.status_label.id : null,
+                serial         : data.serial,
+                name           : data.name,
+                purchase_date  : data.purchase_date ? data.purchase_date.date : null,
+                supplier_id    : data.supplier ? data.supplier.id : null,
+                order_number   : data.order_number,
+                purchase_cost  : Boolean(parseFloat(data.purchase_cost)) ? parseFloat(data.purchase_cost) : null,
+                warranty_months: Boolean(parseInt(data.warranty_months)) ? parseInt(data.warranty_months) : null,
+                notes          : data.notes,
+                rtd_location_id: data.rtd_location ? data.rtd_location.id : null,
+            })
+        }
+        setData(data);
+    }
+
+    const handleAsyncValue = (value:any,option:any) =>{
+        setAsyncValue({
+            ...asyncValue,
+            [option.name]: value
+        });
+        setInput({
+            ...input,
+            [option.name]: value ? value.value : null
+        })
+    }
+
     
     const action = (key:any) => (
         <Button variant="text" onClick={ () => closeSnackbar(key)}>
             <Close />
         </Button>
     );
+
+    const [sample, setSample] = React.useState({});
 
     const loadOptions = async (inputValue:any,inputAsync:inputAsync) => {
 
@@ -86,6 +162,7 @@ const Create = (props:any) =>{
                         label : value.name,
                     }
                 });
+
             case "model" : 
                 let model = await Requests.Models.show({search:inputValue});
                 return model.data.rows.map((value:any)=>{
@@ -156,8 +233,8 @@ const Create = (props:any) =>{
 
         setError(initialError);
 
-        // let a = await Requests.Assets.add(input);
-        let a = await assets.current.add(input);
+        // let a = await Requests.Assets.update(input);
+        let a = await assets.current.update(input);
 
 
         switch(a.data.status){
@@ -167,11 +244,8 @@ const Create = (props:any) =>{
             case "success"  :
                 setSubmit(false);
                 setInput(initialInput);
-
-                console.log(input);
-
-
                 enqueueSnackbar('Successfully added',{variant:"success" ,anchorOrigin:{vertical:'top', horizontal:'right'} ,action});
+                props.history.goBack();
                 return;
             default:
                 enqueueSnackbar('Something went wrong, please reload !',{variant:"error" ,anchorOrigin:{vertical:'bottom', horizontal:'center'},
@@ -187,26 +261,20 @@ const Create = (props:any) =>{
     }
 
     const processError = (data:any) =>{
-        let a:any = initialError;
+        let a:any = error;
         Object.keys(data).forEach((value)=>{
             a[value] = {status      : true,message     : data[value][0]};
-        });
-        
-        
-        // console.log(a);
+        });        
         
         setSubmit(false);
         setError(a);
     }
 
-
-
     return (
         <div className="create-asset">
             <Requests.Assets request={assets} />
-            {/* <div className="title">Create Asset</div> */}
             <Paper className="content col-md-8 offset-md-2 paper">
-                <Typography variant="h6" className="title bg-primary">Create Asset</Typography>
+                <Typography variant="h6" className="title bg-primary">Update Assets</Typography>
                 <form onSubmit={submitForm} className="mt-4">
                     <div className=" row col-12">
                         <div className="col-4 table-title">Company</div>
@@ -215,12 +283,13 @@ const Create = (props:any) =>{
                                 cacheOptions
                                 loadOptions={(inputValue) => loadOptions(inputValue,"company")}
                                 defaultOptions
-                                onChange = {(value:any) => setInput({...input,company_id: value ? value.value : null})}
+                                onChange = {handleAsyncValue}
                                 className="asset-create-async-select"
                                 classNamePrefix="asset-create-async-select"
                                 isDisabled={submit}
+                                value = {asyncValue.company_id}
+                                name="company_id"
                                 isClearable
-                                
                             />
                         </div>
                     </div>
@@ -246,9 +315,11 @@ const Create = (props:any) =>{
                                     cacheOptions
                                     loadOptions={(inputValue) => loadOptions(inputValue,"model")}
                                     defaultOptions
-                                    onChange = {(value:any) => setInput({...input,model_id:value ? value.value : null})}
+                                    onChange = {handleAsyncValue}
                                     className="asset-create-async-select"
                                     classNamePrefix="asset-create-async-select"
+                                    name = "model_id"
+                                    value = {asyncValue.model_id}
                                     isDisabled={submit}
                                     isClearable
                                 />
@@ -264,10 +335,12 @@ const Create = (props:any) =>{
                                     cacheOptions
                                     loadOptions={(inputValue) => loadOptions(inputValue,"status")}
                                     defaultOptions
-                                    onChange = {(value:any) => setInput({...input,status_id:value ? value.value : null})}
+                                    onChange = {handleAsyncValue}
                                     className="asset-create-async-select"
                                     classNamePrefix="asset-create-async-select"
                                     isDisabled={submit}
+                                    name="status_id"
+                                    value={asyncValue.status_id}
                                     isClearable
                                 />
                                 <p className="message">{error.status_id.message}</p>
@@ -327,10 +400,12 @@ const Create = (props:any) =>{
                                 cacheOptions
                                 loadOptions={(inputValue) => loadOptions(inputValue,"supplier")}
                                 defaultOptions
-                                onChange = {(value:any) => setInput({...input,supplier_id:value ? value.value : null})}
+                                onChange = {handleAsyncValue}
                                 className="asset-create-async-select"
                                 classNamePrefix="asset-create-async-select"
                                 isDisabled = {submit}
+                                name =  "supplier_id"
+                                value = {asyncValue.supplier_id}
                                 isClearable
                             />
                         </div>
@@ -391,7 +466,7 @@ const Create = (props:any) =>{
                                     disabled = {submit}
                                     error = {error.warranty_months.status}
                                 />
-                                <FormHelperText style={{whiteSpace:"nowrap"}} hidden={!error.warranty_months.status} error={error.warranty_months.status}>{error.warranty_months.message}</FormHelperText>
+                                    <FormHelperText style={{whiteSpace:"nowrap"}} hidden={!error.warranty_months.status} error={error.warranty_months.status}>{error.warranty_months.message}</FormHelperText>
                             </FormControl>
                         </div>
                     </div>
@@ -414,10 +489,12 @@ const Create = (props:any) =>{
                                 cacheOptions
                                 loadOptions={(inputValue) => loadOptions(inputValue,"locations")}
                                 defaultOptions
-                                onChange = {(value:any) => setInput({...input,rtd_location_id:value ? value.value : null})}
+                                onChange = {handleAsyncValue}
                                 className="asset-create-async-select"
                                 classNamePrefix="asset-create-async-select"
                                 isDisabled = {submit}
+                                name = "rtd_location_id"
+                                value = {asyncValue.rtd_location_id}
                                 isClearable
                             />
                         </div>
@@ -455,7 +532,7 @@ const Create = (props:any) =>{
                     <hr/>
                     <div className="col-12 text-right">
                         <Button variant="contained" disabled = {submit} onClick={() =>props.history.goBack()}>Cancel</Button>&nbsp;&nbsp;
-                        <Button variant="contained" disabled = {submit} type="submit">Save</Button>
+                        <Button variant="contained" disabled = {submit} type="submit">Update</Button>
                     </div>
                 </form>           
             </Paper>
@@ -465,4 +542,4 @@ const Create = (props:any) =>{
 
 
 
-export default withRouter(Create);
+export default withRouter(Edit);

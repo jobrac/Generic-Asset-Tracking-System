@@ -1,7 +1,7 @@
 import React from 'react';
-import {Breadcrumbs,Control,setTableDisplay} from 'Redux/Actions';
+import {Breadcrumbs,Control,setTableDisplay,LoggedIn} from 'Redux/Actions';
 import {useSelector,useDispatch} from 'react-redux'
-import { List as Lists, Paper, FormControl, InputLabel, Select, MenuItem, InputBase, Button, Popper, Grow, ClickAwayListener, MenuList, ListItem, ListItemText, ListItemSecondaryAction, Checkbox, Fab, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import { List as Lists, Paper, FormControl, InputLabel, Select, MenuItem, InputBase, Button, Popper, Grow, ClickAwayListener, MenuList, ListItem, ListItemText, ListItemSecondaryAction, Checkbox, Fab, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { List, CloudDownload, YoutubeSearchedFor, Edit, Delete} from '@material-ui/icons';
 import { Route, withRouter, Redirect } from 'react-router';
@@ -14,13 +14,17 @@ import Archived from './Archived';
 import Deleted from './Deleted';
 import Deployed from './Deployed';
 import AddIcon from '@material-ui/icons/Add';
-import { Requests } from 'Services';
+import { Requests, Token } from 'Services';
 import {Show} from 'Types/Requests/Assets';
 import {hardware} from 'Redux/Actions';
+// import {export2CSV} from 'Services/Export2CSV';
+import XLSX, { utils } from 'xlsx';
 
 
 const Hardware = (props:any) => {
     //global state
+
+    const assets:any = React.useRef();
     const tableDisplay = useSelector((state:any)=>state.TableDisplay.assets);
     const asset = useSelector((state:any) =>state.Data.hardware);
 
@@ -30,6 +34,15 @@ const Hardware = (props:any) => {
         // status:"Deleted"
     }
     const [config,setConfig] = React.useState(params);
+    const [openMAS,setOpenMAS] = React.useState(false);
+    const [filter,setFilter] = React.useState({
+        company     : '',
+        name        : '',
+        asset_tag   : '',
+        serial      : '',
+        status_label: '',
+        location    : ''
+    });
 
     const [check,setCheck] = React.useState([
         {id:0,checked:false,value:{}},
@@ -51,11 +64,10 @@ const Hardware = (props:any) => {
     const [deleteModal,setDeleteModal] = React.useState(false);
     const [deleteData,setDeleteData] = React.useState([]);
 
-
     const dispatch = useDispatch();
     const inputLabel = React.useRef(null);
 
-    const downloadOption = ["CSV","MS-EXCEL","MS-WORD","PDF"]; //for download option
+    const downloadOption = ["CSV","MS-EXCEL"/*,"MS-WORD","PDF"*/]; //for download option
     const categoryOption =[
         {name: "All ",url:"/assets/hardware"},
         {name: "Pending ",url:"/assets/hardware/pending"},
@@ -91,6 +103,64 @@ const Hardware = (props:any) => {
     },[]);
 
 
+    const handleFileDownload = (event:any,type:any) =>  {
+        handleClose(downloadRef,setDisplayDownload,event);
+
+        const headers:any = {};
+        const items:any = [];
+        
+        Object.keys(tableDisplay).forEach((item:any) =>{
+            if(tableDisplay[item].show){
+                headers[item] = tableDisplay[item].name.replace(/,/g, '');
+            }
+        })
+        
+        asset.data.rows.forEach((element:any) => {
+            let list:any = {};
+            Object.keys(element).forEach((items) =>{
+                if(headers[items]){ 
+                    switch(true){
+                        case element[items] === null : 
+                            list[items] = ' ';
+                            break;
+                        case element[items].hasOwnProperty('name') : 
+                            list[items] = element[items].name.replace(/,/g, '');
+                            break;
+                        case element[items].hasOwnProperty('date') :
+                            list[items] = element[items].date;
+                            break;
+                        case element[items].hasOwnProperty('datetime') :
+                            list[items] = element[items].datetime;
+                            break;
+                        default :
+                            list[items] = element[items];
+                            break;
+                    }
+                }
+            });
+            items.push(list);
+        });
+
+        let worksheet = XLSX.utils.json_to_sheet(items);
+        let new_workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(new_workbook,worksheet, "Assets");
+
+        switch(type){
+            case "CSV" :
+                XLSX.writeFile(new_workbook,"Assets.csv");
+                return;
+            case "MS-EXCEL" :
+                XLSX.writeFile(new_workbook,"Assets.xlsx");
+                return;
+        }
+
+        
+        
+        
+    }
+
+
+
     const scroll = () => {
         
         let scrollY = window.scrollY;
@@ -100,7 +170,6 @@ const Hardware = (props:any) => {
                 selector[i].style.top = style;
             }
         }
-
         if(scrollY > 150){
             changeAll(scrollY - 155 + 'px');
         }else{
@@ -112,13 +181,10 @@ const Hardware = (props:any) => {
         funct(param);
     };
 
-
     const handleClose = (ref:any,funct:Function,event:any) => {
-
         if (ref.current && ref.current.contains(event.target as HTMLElement)) {
           return;
         }
-        
         funct(false);
     };
 
@@ -175,16 +241,12 @@ const Hardware = (props:any) => {
                     a[0].checked = false;
                 a[parseInt(event.target.value, 10)].checked = false;
                 a[parseInt(event.target.value, 10)].value = values;
-            
-
             }else{
                 a[parseInt(event.target.value, 10)].checked = true;
                 a[parseInt(event.target.value, 10)].value = values;            
             }
             setCheck([...a]);
-
             let po = a.filter((value:any)=> value.checked).length;
-
             if(po){
                 if(po > 1){
                     setShowAction({
@@ -217,10 +279,16 @@ const Hardware = (props:any) => {
             let a = check.filter((value:any)=>value.checked && value.id !== 0);
             setDeleteData(a);
             setDeleteModal(true);
+            return;
+        }else{
+            let a:any = check.filter((value:any)=>value.checked && value.id !== 0)[0];
+            props.history.push('/assets/edit/'+a.value.id);
+            return;
         }
+
     }
 
-    const deleteAsset = () =>{
+    const deleteAsset = async () =>{
         
         let idHolder:any = [];
         deleteData.forEach(value =>{
@@ -230,7 +298,9 @@ const Hardware = (props:any) => {
             }
         })
 
-        dispatch(hardware(config));
+        // await Requests.Assets.delete(idHolder);
+        await assets.current.delete(idHolder);
+        dispatch(hardware({config:config}));
         setShowAction({delete:false,edit:false});
         setCheck([
             {id:0,checked:false,value:{}},
@@ -248,10 +318,75 @@ const Hardware = (props:any) => {
         setDeleteModal(false);
     }
 
+    const modalAdvanceSearch = () =>{
+
+
+        const setValue = (event:any) => {
+
+            let a:any = filter;
+            a[event.target.name] = event.target.value;
+            setFilter(a)
+            Object.keys(a).forEach((key) => (a[key] === '') && delete a[key])
+            setConfig({
+                ...config,
+                filter : JSON.stringify(a)
+            });
+
+            return ;
+        }
+
+        return (
+            <Dialog
+                // fullWidth
+                maxWidth="sm"
+                open={openMAS}
+                onClose={ () => setOpenMAS(!openMAS)}
+            >
+            <DialogTitle id="max-width-dialog-title">Advance Search</DialogTitle>
+                <DialogContent>
+                    <form className="advance-search">
+                        <div className="row col-12 ">
+                            <div className="col-5 title">Company</div>
+                            <div className="col-7 textfield"><TextField value={filter.company} name="company" onChange={setValue} variant="outlined" /></div>
+                        </div>
+                        <div className="row col-12 mt-1">
+                            <div className="col-5 title">Asset Name</div>
+                            <div className="col-7 textfield"><TextField value={filter.name} name="name" onChange={setValue} variant="outlined" /></div>
+                        </div>
+                        <div className="row col-12 mt-1">
+                            <div className="col-5 title">Asset Tag</div>
+                            <div className="col-7 textfield"><TextField value={filter.asset_tag} name="asset_tag" onChange={setValue} variant="outlined" /></div>
+                        </div>
+                        <div className="row col-12 mt-1">
+                            <div className="col-5 title">Serial</div>
+                            <div className="col-7 textfield"><TextField  value={filter.serial} name="serial" onChange={setValue} variant="outlined" /></div>
+                        </div>
+                        <div className="row col-12 mt-1">
+                            <div className="col-5 title">Status</div>
+                            <div className="col-7 textfield"><TextField value={filter.status_label} name="status_label" onChange={setValue} variant="outlined" /></div>
+                        </div>
+                        <div className="row col-12 mt-1">
+                            <div className="col-5 title">Location</div>
+                            <div className="col-7 textfield"><TextField value={filter.location} name="location" onChange={setValue} variant="outlined" /></div>
+                        </div>
+                    </form>
+                </DialogContent>
+                
+                <DialogActions>
+                    <Button variant="contained" onClick={()=>setOpenMAS(false)}>
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        )
+    }
+
 
     return(
         <React.Fragment>
+            <Requests.Assets request={assets} />
             <Paper className="assets-all">
+                {modalAdvanceSearch()}
                 <div className="header">
                     <div className="row">
                         <div className="col-xl-6 col-lg-3 col-md-3 col-sm-3">
@@ -262,7 +397,12 @@ const Hardware = (props:any) => {
                                 <Select
                                         // id="demo-simple-select-outlined"
                                         value={props.location.pathname}
-                                        onChange={(value)=>props.history.push(value.target.value)}
+                                        onChange={(value)=>{
+                                            props.history.push(value.target.value)
+                                            // if(!Token.exist()){
+                                            //     dispatch(LoggedIn(false));
+                                            // }
+                                        }}
                                         // labelWidth={labelWidth}
                                     >
                                     {
@@ -282,13 +422,15 @@ const Hardware = (props:any) => {
                                     className="input"
                                     placeholder="Search…"
                                     inputProps={{ 'aria-label': 'search' }}
+                                    value = {config.search}
+                                    onChange = {(value) => setConfig({...config, search : value.target.value})}                               
                                 />
                             </div>
 
                             <div className="buttons">
 
                                 {/* advance search */}
-                                <Button variant="outlined" className="advance-search">
+                                <Button variant="outlined" onClick={()=>setOpenMAS(true)}>
                                     <YoutubeSearchedFor />
                                 </Button>
 
@@ -361,7 +503,7 @@ const Hardware = (props:any) => {
                                                     <MenuList id="menu-list-grow" onKeyDown={(event:any) => handleListKeyDown(event,setDisplayDownload)}>
                                                         {
                                                             downloadOption.map((value:any,key:number)=>
-                                                                <MenuItem key={key} onClick={(event) => handleClose(downloadRef,setDisplayDownload,event)}>{value}</MenuItem>
+                                                                <MenuItem key={key} onClick={(event:any) => handleFileDownload(event,value)}>{value}</MenuItem>
                                                             )
                                                         }
                                                     </MenuList>
@@ -466,7 +608,7 @@ const Hardware = (props:any) => {
                             setConfig
                         }} /> } 
                     />
-
+                    
                     {/* <Route exact path="/assets/hardware/auditoverdue" component={AuditOverdue} /> */}
                     {/* <Redirect
                         to={{

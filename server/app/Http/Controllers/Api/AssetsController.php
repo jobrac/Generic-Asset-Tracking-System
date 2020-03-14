@@ -32,6 +32,7 @@ use TCPDF;
 use Validator;
 use View;
 use App\Http\Transformers\SelectlistTransformer;
+use Storage;
 
 
 /**
@@ -214,7 +215,7 @@ class AssetsController extends Controller
             default:
 
                 if ((!$request->filled('status_id')) && ($settings->show_archived_in_list!='1')) {
-                    // terrible workaround for complex-query Laravel bug in fulltext
+                    // terrible workarountyped for complex-query Laravel bug in fulltext
                     $assets->join('status_labels AS status_alias',function ($join) {
                         $join->on('status_alias.id', "=", "assets.status_id")
                             ->where('status_alias.archived', '=', 0);
@@ -437,6 +438,7 @@ class AssetsController extends Controller
         $asset->supplier_id             = $request->get('supplier_id', 0);
         $asset->requestable             = $request->get('requestable', 0);
         $asset->rtd_location_id         = $request->get('rtd_location_id', null);
+        $asset->image                   = $request->get('image',null);
 
         // Update custom fields in the database.
         // Validation for these fields is handled through the AssetRequest form request
@@ -465,6 +467,11 @@ class AssetsController extends Controller
             if (isset($target)) {
                 $asset->checkOut($target, Auth::user(), date('Y-m-d H:i:s'), '', 'Checked out on asset creation', e($request->get('name')));
             }
+            
+            if($request->image !== null){
+                Storage::move("temp/".$request->image,"files/".$request->image);
+            }
+            
             return response()->json(Helper::formatStandardApiResponse('success', $asset, trans('admin/hardware/message.create.success')));
         }
 
@@ -485,8 +492,11 @@ class AssetsController extends Controller
         //////$this->authorize('update', Asset::class);
 
         if ($asset = Asset::find($id)) {
+            $oldImage = $asset->image;
 
             $asset->fill($request->all());
+            
+
 
             ($request->filled('model_id')) ?
                 $asset->model()->associate(AssetModel::find($request->get('model_id'))) : null;
@@ -494,6 +504,8 @@ class AssetsController extends Controller
                 $asset->company_id = Company::getIdForCurrentUser($request->get('company_id')) : null;
             ($request->filled('rtd_location_id')) ?
                 $asset->location_id = $request->get('rtd_location_id') : null;
+            
+
 
             // Update custom fields
             if (($model = AssetModel::find($asset->model_id)) && (isset($model->fieldset))) {
@@ -524,6 +536,14 @@ class AssetsController extends Controller
                 if (isset($target)) {
                     $asset->checkOut($target, Auth::user(), date('Y-m-d H:i:s'), '', 'Checked out on asset update', e($request->get('name')), $location);
                 }
+
+                if ($request->image != null){
+                    Storage::move("temp/".$request->image,"files/".$request->image);
+                    // Storage::delete("files/",$oldImage);
+                    unlink(storage_path('app/files/'.$oldImage));
+                }
+
+
 
                 return response()->json(Helper::formatStandardApiResponse('success', $asset, trans('admin/hardware/message.update.success')));
             }

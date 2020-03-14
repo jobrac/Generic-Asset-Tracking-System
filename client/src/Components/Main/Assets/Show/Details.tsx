@@ -3,6 +3,7 @@ import { Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/c
 import Skeleton from '@material-ui/lab/Skeleton';
 //@ts-ignore
 import ModalImage from "react-modal-image";
+import moment from 'moment';
 
 const Details = (props:any) => {
 
@@ -83,7 +84,7 @@ const Details = (props:any) => {
                                 ? 
                                     <Skeleton variant="text" /> 
                                 :
-                                    props.state.data.purchase_date.date
+                                    moment(props.state.data.purchase_date.date).format('LL')
                             }</TableCell>
                         </TableRow>
                         <TableRow>
@@ -113,7 +114,7 @@ const Details = (props:any) => {
                                 ? 
                                     <Skeleton variant="text" /> 
                                 :
-                                    props.state.data.supplier.name
+                                    props.state.data.supplier  ? props.state.data.supplier.name : ''
                             }</TableCell>
                         </TableRow>
                         <TableRow>
@@ -151,7 +152,7 @@ const Details = (props:any) => {
                                 ? 
                                     <Skeleton variant="text" /> 
                                 :
-                                    props.state.data.location.name
+                                    props.state.data.location ? props.state.data.location.name : ''
                             }</TableCell>
                         </TableRow>
                         <TableRow>
@@ -161,7 +162,7 @@ const Details = (props:any) => {
                                 ? 
                                     <Skeleton variant="text" /> 
                                 :
-                                    props.state.data.rtd_location.name
+                                    props.state.data.rtd_location ? props.state.data.rtd_location.name : ''
                             }</TableCell>
                         </TableRow>
                         <TableRow>
@@ -171,7 +172,7 @@ const Details = (props:any) => {
                                 ? 
                                     <Skeleton variant="text" /> 
                                 :
-                                    props.state.data.created_at.datetime
+                                    moment(props.state.data.created_at.datetime).format('LL')
                             }</TableCell>
                         </TableRow>
                         <TableRow>
@@ -181,7 +182,7 @@ const Details = (props:any) => {
                                 ? 
                                     <Skeleton variant="text" /> 
                                 :
-                                    props.state.data.updated_at.datetime
+                                    moment(props.state.data.updated_at.datetime).format('LL')
                             }</TableCell>
                         </TableRow>
                         <TableRow>

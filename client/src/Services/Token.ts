@@ -4,6 +4,7 @@ import Cookies from 'universal-cookie';
 export default class Token{
         
     public static save(token:any):void{
+        this.remove();
         let a = new Date();
         a.setMinutes(a.getMinutes() + 32); //1440 1 day
 

@@ -8,12 +8,14 @@ import Hardware from './Hardware';
 import Maintenance from './Maintenance';
 import Show from './Show';
 import Create from './Create';
+import Edit from './Edit';
 import './AssetsStyle.scss';
 
 const Assets = () => {
     return(
         <Route>
             <Route path="/assets/id/:id" component={Show} />
+            <Route path="/assets/edit/:id" component={Edit} />
             <Route path="/assets/hardware" component={Hardware} />
             <Route path="/assets/create" component={Create} />
 

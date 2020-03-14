@@ -2,7 +2,7 @@ import React from 'react';
 import {InputBase, IconButton, Typography,CssBaseline, Toolbar, AppBar, Button, Avatar, Popover, Badge, Card, CardContent, CardActions, CardHeader, List, ListItem, ListItemIcon, ListItemText, Divider, LinearProgress } from '@material-ui/core';
 import {Assignment, Search, ArrowDropDown,AssignmentReturned, Edit, ExitToApp, Notifications} from '@material-ui/icons';
 import './NavigationStyle.scss';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+// import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 
 interface Props{
@@ -18,7 +18,7 @@ interface Props{
     user            :   any,
 
     toggleSidebar() :   void,
-    toggleSearch()  :   void,
+    toggleSearch(a?:boolean)  :   void,
     toggleUser(event:React.MouseEvent<HTMLElement>)             :   void,
     swipeDrawer(event: React.KeyboardEvent | React.MouseEvent)   :   void,
     logout()         :   void, 
@@ -54,7 +54,7 @@ const Topbar = (props:Props) => {
                             :
                             props.state.sidebar ? "hamburger hamburger--squeeze is-active" : "hamburger"
                         } 
-                        onClick={props.state.width > 600 ? props.toggleSidebar : props.swipeDrawer}
+                        onClick={props.state.width > 600 ? () => props.toggleSidebar() : props.swipeDrawer}
                     >	
                         <span className="hamburger-box">
                             <span className="hamburger-inner"></span>
@@ -75,7 +75,8 @@ const Topbar = (props:Props) => {
                                 name="search"
                                 placeholder="Lookup for assets..."
                                 inputProps={{ 'aria-label': 'search' }}
-                                onFocus={ () => props.toggleSearch() }
+                                onFocus={ () => props.toggleSearch(true) }
+                                onBlur={ () => props.toggleSearch(false) }
                                 autoComplete = "off"
                             />
 
@@ -332,7 +333,7 @@ const Topbar = (props:Props) => {
                             aria-haspopup="true"
                             edge="end"
                             className="search-toggle"
-                            onClick={props.toggleSearch}
+                            onClick={ () =>props.toggleSearch()}
                         >
                             <Search />
                         </IconButton>

@@ -10,6 +10,7 @@ const Show = (props:any) => {
 
     const id = parseInt(props.match.params.id,10);
     const path = props.location.pathname;
+    const assets:any = React.useRef();
 
     const dispatch = useDispatch();
     const [data,setData]= React.useState();
@@ -27,7 +28,8 @@ const Show = (props:any) => {
     },[]);
 
     const checkId = async () =>{
-        const {data} = await Requests.Assets.get({id});
+        // const {data} = await Requests.Assets.get({id});
+        const {data} = await assets.current.get({id});
 
         if(data.status || data.status === 'error' ){
             props.history.push('/not-found');
@@ -45,7 +47,7 @@ const Show = (props:any) => {
 
     return(
         <Paper className="show-asset">
-
+            <Requests.Assets request={assets} />
             {/* <Button className="create" variant="contained" color="primary">Create</Button> */}
             <Paper className="header-tab">
                 <Tabs

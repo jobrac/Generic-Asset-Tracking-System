@@ -13,6 +13,8 @@ const logo = process.env.REACT_APP_LOGO;
 
 const Login = (props:any) => {
     
+    const request:any = React.useRef();
+    const user:any = React.useRef();
     const [ redirect, setRedirect ] = React.useState('');
     const [ submit, setSubmit ] = React.useState(false);
     const [ credentials, setCredentials ] = React.useState({username : '',password : '',});
@@ -33,7 +35,7 @@ const Login = (props:any) => {
         setSubmit(true);
         setError({status:true,message:''});
 
-        const a:any = await Requests.Auth.login({
+        const a:any = await request.current.login({
             username : credentials.username,
             password : credentials.password,
         });
@@ -54,26 +56,30 @@ const Login = (props:any) => {
                     break;
                 case 200 :
 
+                    // console.log(a.data.token);
+
                     Token.save(a.data.token);
 
                     const jwt:any = jwt_decode(Token.get()); // get id of current user using JWT payload
-                    const user =await Requests.User.get({id:jwt.sub});
-                    checkUser(user);
+                    // const user =await Requests.User.get({id:jwt.sub});
+                    
+                    const users = await user.current.get({id:jwt.sub});
+                    checkUser(users);
                     break;
                 default :
                     setSubmit(false);
-                    setError({
-                        status : true,
-                        message:  "Something wrong with the server, please try again later!!!!",
-                    })
+                    // setError({
+                    //     status : true,
+                    //     message:  "Something wrong with the server, please try again later!!!!",
+                    // })
                     break;
             }
         }else{
             setSubmit(false);
-            setError({
-                status : true,
-                message : "Something wrong with the server. <br /> Please contact Administrator!!!!"
-            })
+            // setError({
+            //     status : true,
+            //     message : "Something wrong with the server. <br /> Please contact Administrator!!!!"
+            // })
         }
 
         return;
@@ -121,6 +127,9 @@ const Login = (props:any) => {
 
     return(
         <div>
+            <Requests.Auth  request = {request} />
+            <Requests.User request = {user} />
+
         {/* // <Container maxWidth="lg"> */}
             <div className="logo-login">
                 <img src={logo} alt="logo" />

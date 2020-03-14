@@ -67,7 +67,11 @@ export interface Show{
     /**
      * Optionally restrict asset results to this status label ID
      */
-    status_id       ?:       number
+    status_id       ?:       number,
+    name            ?:       string,
+    asset_tag       ?:       string,
+    serial          ?:       string,
+    filter          ?:       string,
 }
 
 
@@ -261,17 +265,52 @@ export interface Delete{
     /**
      * The assigned user field is required when none of assigned asset / assigned location are present.
      */
-    assigned_user : number,
+    assigned_user ?: number,
 
     /**
      * The assigned asset field is required when none of assigned user / assigned location are present.
      */
-    assigned_asset : number,
+    assigned_asset ?: number,
 
     /**
-     * The assigned location field is required when none of assigned user / assigned asset are present.
+     * The location ID to check the asset out to
      */
-    checkout_to_type : number
+    
+    assigned_location ?: number,
+
+    /**
+     * Optional date the asset is expected to be checked in
+     */
+    expected_checkin ?: Date,
+
+    /**
+     * Optional date to override the checkout time of now
+     */
+    checkout_at ?: Date,
+    
+    /**
+     * Optional new asset name. This is useful for changing the asset's name on new checkout,
+     * for example, an asset that was named "Anna's MacBook Pro" could be renamed on the fly
+     * when it's checked out to elizabeth, to "Beth's MacBook Pro" 
+     */
+    name ?: string,
+
+    /**
+     * Optional note about the checkout
+     */
+    note ?: string,
+
+    /**
+     * Type of entity the asset is being checkout to:user, asset, or locatio
+     * 
+     * An asset ID and checkout_to_type is always required, in addition to one of the following
+     * 
+     *  -  assigned_user
+     *  -  assigned_asset
+     *  -  assigned_location
+     */
+    checkout_to_type ?: "user" | "asset" | "location"
+
 }
 
 export interface Checkin{

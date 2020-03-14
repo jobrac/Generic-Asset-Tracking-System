@@ -61,22 +61,18 @@ const Navigation = (props:any) => {
 		setUser(user ? null : event.currentTarget);
 	}
 
-	const toggleSidebar = ():void =>{
-		
-		//toggle backdrop in search when toggling sidebar
+	const toggleSidebar = (a?:boolean):void =>{
 		if(search){
-			toggleSearch();
+			toggleSearch(false);
 		}
-		setSidebar(!sidebar);
+		setSidebar(a === undefined ? !sidebar:a);
 	}
 
-	const toggleSearch = ():void=>{
-
-		
+	const toggleSearch = (a?:boolean):void=>{
 		if(sidebar){
-			toggleSidebar();
+			toggleSidebar(false);
 		}
-		setSearch(!search);
+		setSearch(a === undefined ?!search:a);
 	}
 
 	const swipeDrawer = (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -90,7 +86,7 @@ const Navigation = (props:any) => {
 		Token.remove();
 		props.history.push('/login');
 		dispatch(LoggedIn(false));
-		window.location.reload();
+		// window.location.reload();
 	}
 
 
@@ -209,8 +205,8 @@ const Navigation = (props:any) => {
 			/>
 		
 			{/* <div className="container-body"> */}
-				<Backdrop open={sidebar} onClick={toggleSidebar} className="backdrop-desktop"/>
-				<Backdrop open={search} onClick={toggleSearch} className="backdrop-search"/>
+				{/* <Backdrop open={sidebar} onClick={ () => toggleSidebar()} className="backdrop-desktop"/>
+				<Backdrop open={search} onClick={ () => toggleSearch()} className="backdrop-search"/> */}
 			{/* </div> */}
 		</div>
 	)
